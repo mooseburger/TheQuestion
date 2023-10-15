@@ -1,4 +1,5 @@
-import './assets/main.css'
+import './scss/site.scss'
+import './assets/logo.svg';
 
 import { createApp } from 'vue'
 
