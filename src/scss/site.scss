@@ -1,5 +1,7 @@
-.test {
-    .test42 {
-        color: red;
+@import 'boring.scss';
+
+.navbar {
+    > .container {
+        display: block;
     }
 }

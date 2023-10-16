@@ -48,6 +48,14 @@ export default defineConfig({
         },
     },
 
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@import "variables.scss";`,  // assuming you have a variables.scss you want to globally import
+            },
+        },
+    },
+
     plugins: [
         vue(),
     ],

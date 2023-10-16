@@ -1,0 +1,19 @@
+.boring {
+    .navbar-brand {
+        --bs-navbar-brand-color: white;
+    }
+
+    .nav-link {
+        --bs-nav-link-color: white;
+    }
+
+    header {
+        background-color: $boringGray;
+        color: white;
+    }
+
+    .btn-answer {
+        background-color: $boringAccent;
+        color: white;
+    }
+}
