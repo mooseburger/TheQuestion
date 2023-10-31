@@ -1,0 +1,13 @@
+<svg width="42" height="43" viewBox="0 0 42 43" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(1 1)" fill="none" fill-rule="evenodd">
+        <ellipse stroke="#FFF" opacity=".722" cx="19.5" cy="20.976" rx="17.5" ry="17.085"/>
+        <ellipse stroke="#FFF" cx="19.5" cy="20.976" rx="12" ry="11.72"/>
+        <path d="M0 27.317h40v11.707H0z"/>
+        <path d="M0 28.293h40V40H0z"/>
+        <path stroke="#FFF" opacity=".605" stroke-linecap="square" d="M22.5 27.805h5"/>
+        <path stroke="#FFF" stroke-linecap="square" d="M10.5 27.805h3"/>
+        <path stroke="#FFF" opacity=".756" stroke-linecap="square" d="M.5 27.5h39"/>
+        <path stroke="#FFF" stroke-linecap="square" d="M19.5 13.171v-2.927M19.5 8.293v-6.83M19.5 41.293v-6.83M23.5 15.122l2-2.927M24.5 9.268l3-6.829M33.5 4.39l3-3.902M27.5 17.073l5-2.927M30.5 11.22l9-6.83M27.5 20.976l12-.476M26.5 25.854l5 3.902M33.5 26.829l6 1.951M35.5 16.098l4-.976M21.5 5.366l1-4.878M32.5 30.732l7 5.853M17.5 7.317l-1-5.854M16.5 12.195l-2-3.902M10.5 8.293l-4-5.854M7.5 11.22l-7-6.83M11.5 18.049l-6-2.927M8.5 20.976l-8-.476M13.5 24.878l-7 4.878M6.5 29.756l-6 3.903M14.5 29.756l-8 9.744M4.5 24.878l-4 .976M26.5 34.5l4 5.012M11.5 2.5l-1-2.012"/>
+        <path stroke="#FFF" d="m23.5 31.525 2-.793 2-1.508M15.5 31.525l-2.971-1.15-1.674-2.082"/>
+    </g>
+</svg>

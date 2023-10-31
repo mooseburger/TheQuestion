@@ -1,5 +1,5 @@
-import './scss/site.scss'
-import './assets/logo.svg';
+import './scss/site.scss';
+import './assets/boring-logo.svg'
 
 import { createApp } from 'vue'
 
