@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheQuestion.Data;
 
@@ -11,9 +12,10 @@ using TheQuestion.Data;
 namespace TheQuestion.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231104224216_SetSeedUserPass")]
+    partial class SetSeedUserPass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,16 +161,14 @@ namespace TheQuestion.Data.Migrations
                         {
                             Id = "b74ddd14-6340-4840-95c2-db12554843e5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8cf618d1-9ae6-475e-8791-8badf12f99d4",
+                            ConcurrencyStamp = "f1ae3363-35cc-4aac-b00c-bdcfd3a1ccd0",
                             Email = "admin@example.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "admin@example.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMuTng1EgJaSNjVSRClL6Rqpo9wOnkSmFtCHQitPIEgHcKKkqA6zxLuS1p3C1529dg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA2pnxpqm7VsBAp2TK+upQP/5fiOhQgXf2xzuUXa6YHzGZbIWyStg7YhWd8IbVFArQ==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6d5e79c5-0bcd-4711-ad9b-91bc19ca4cf4",
+                            SecurityStamp = "cfdbbc54-fda7-4cb5-b85f-12fe56559c11",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });

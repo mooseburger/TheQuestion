@@ -30,8 +30,12 @@ namespace TheQuestion.Data
                 PhoneNumber = "1234567890"
             };
 
-            PasswordHasher<IdentityUser> passwordHasher = new PasswordHasher<IdentityUser>();
-            passwordHasher.HashPassword(user, "admin123");
+            user.NormalizedUserName = "admin";
+            user.NormalizedEmail = "admin@example.com";
+            user.PasswordHash = "AQAAAAEAACcQAAAAEMuTng1EgJaSNjVSRClL6Rqpo9wOnkSmFtCHQitPIEgHcKKkqA6zxLuS1p3C1529dg=="; // admin123
+            user.ConcurrencyStamp = "8cf618d1-9ae6-475e-8791-8badf12f99d4";
+            user.SecurityStamp = "6d5e79c5-0bcd-4711-ad9b-91bc19ca4cf4";
+            user.EmailConfirmed = true;
 
             builder.Entity<IdentityUser>().HasData(user);
         }
