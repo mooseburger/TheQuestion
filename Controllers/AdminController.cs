@@ -28,7 +28,7 @@ namespace TheQuestion.Controllers
                 return View(login);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, true);
             if (!result.Succeeded)
             {
                 login.SignInResult = result;
@@ -38,8 +38,16 @@ namespace TheQuestion.Controllers
             return Redirect("admin");
         }
 
-        [HttpGet("admin")]
+        [HttpGet("logout")]
         [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
+
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
