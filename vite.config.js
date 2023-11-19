@@ -17,6 +17,7 @@ export default defineConfig({
         emptyOutDir: true,
         outDir: 'wwwroot',
         assetsDir: 'assets',
+        sourcemap: true,
         rollupOptions: {
             input: ['src/main.js'],
             // remove hashing, but I could add it back in
