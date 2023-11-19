@@ -1,12 +1,9 @@
 import './scss/site.scss';
-import './assets/boring-logo.svg'
+import './assets/boring-logo.svg';
+import UserList from './components/UserList.vue';
 
 import { createApp } from 'vue'
 
-createApp({
-    data() {
-        return {
-            count: 0
-        }
-    }
-}).mount('#app')
+if (document.getElementById("user-list")) {
+    createApp(UserList).mount('#user-list');
+}
