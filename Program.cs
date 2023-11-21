@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheQuestion.Data;
+using TheQuestion.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.ConfigureApplicationCookie(options => 
 {
@@ -48,6 +52,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{action}/{id?}");
+    pattern: "{controller}/{action}/{id?}",
+    defaults: new { action = "Index" });
 
 app.Run();
