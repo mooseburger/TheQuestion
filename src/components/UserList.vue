@@ -47,6 +47,9 @@
                 <td>{{u.email}}</td>
                 <td>{{u.roleName}}</td>
             </tr>
+            <tr v-if="error">
+                <td>{{error}}</td>
+            </tr>
         </tbody>
     </table>
     <Paginator :total-records="totalRecords" @page-change="pageChange"/>
