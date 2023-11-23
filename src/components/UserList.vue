@@ -39,6 +39,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -46,6 +47,9 @@
                 <td>{{u.username}}</td>
                 <td>{{u.email}}</td>
                 <td>{{u.roleName}}</td>
+                <td>
+                    <a :href="`/user/edit/${u.username}`">Edit</a>
+                </td>
             </tr>
             <tr v-if="error">
                 <td>{{error}}</td>

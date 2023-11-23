@@ -18,7 +18,7 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             string pageSql = @"
-                SELECT NormalizedUserName AS Username, NormalizedEmail AS Email, r.NormalizedName AS RoleName
+                SELECT UserName AS Username, Email AS Email, r.Name AS RoleName
                 FROM AspNetUsers u
                 LEFT JOIN AspNetUserRoles ur ON ur.UserId = u.Id
                 INNER JOIN AspNetRoles r ON r.Id = ur.RoleId

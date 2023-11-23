@@ -35,7 +35,7 @@ namespace TheQuestion.Controllers
                 return View(login);
             }
 
-            return Redirect("/user");
+            return Redirect("/answer/dashboard");
         }
 
         [HttpGet]

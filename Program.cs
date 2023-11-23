@@ -19,9 +19,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.ConfigureApplicationCookie(options => 
 {
-    options.LoginPath = "/login";
-    options.LogoutPath = "/logout";
-    options.AccessDeniedPath = "/login";
+    options.LoginPath = "/auth/login";
+    options.LogoutPath = "/auth/logout";
+    options.AccessDeniedPath = "/auth/login";
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
