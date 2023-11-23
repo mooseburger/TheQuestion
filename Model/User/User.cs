@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TheQuestion.Model.Admin
+namespace TheQuestion.Model.User
 {
     public class User
     {

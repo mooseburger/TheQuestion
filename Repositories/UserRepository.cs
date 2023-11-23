@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using TheQuestion.Model.Admin;
 using TheQuestion.Model.Generic;
+using TheQuestion.Model.User;
 
 namespace TheQuestion.Repositories
 {

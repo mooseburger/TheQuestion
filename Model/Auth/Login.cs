@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace TheQuestion.Model.Admin
+namespace TheQuestion.Model.Auth
 {
     public class Login
     {

@@ -1,28 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TheQuestion.Model.Admin;
-using TheQuestion.Model.Generic;
-using TheQuestion.Repositories;
+using TheQuestion.Model.Auth;
 
 namespace TheQuestion.Controllers
 {
-    public class AdminController : Controller
+    public class AuthController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IUserRepository _userRepository;
 
-        public AdminController(SignInManager<IdentityUser> signInManager, IUserRepository userRepository)
+        public AuthController(SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
-            _userRepository = userRepository;
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -46,7 +35,7 @@ namespace TheQuestion.Controllers
                 return View(login);
             }
 
-            return Redirect("/admin");
+            return Redirect("/user");
         }
 
         [HttpGet]
@@ -55,14 +44,6 @@ namespace TheQuestion.Controllers
         {
             await _signInManager.SignOutAsync();
             return Redirect("/");
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Users([FromQuery] PaginatedRequest request)
-        {
-            var result = await _userRepository.GetUserPage(request);
-            return Ok(result);
         }
     }
 }

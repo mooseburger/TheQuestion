@@ -15,7 +15,7 @@
         methods: {
             async getUserPage() {
                 try {
-                    const response = await fetch(`/admin/users?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`);
+                    const response = await fetch(`/user/getPage?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`);
                     const paginatedResponse = await response.json();
                     this.users = paginatedResponse.page;
                     this.totalRecords = paginatedResponse.totalRecords;
