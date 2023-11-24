@@ -21,6 +21,7 @@ namespace TheQuestion.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Login login)
         {
             if (!ModelState.IsValid)

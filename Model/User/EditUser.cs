@@ -6,11 +6,16 @@ namespace TheQuestion.Model.User
 {
     public class EditUser : User
     {
+        public EditUser() { }
+
         public EditUser(IdentityUser user) 
         { 
             Username = user.UserName;
+            OriginalUsername = user.UserName;
             Email = user.Email;
         }
+
+        public string? OriginalUsername { get; set; }
 
         [MinLength(12)]
         [DataType(DataType.Password)]

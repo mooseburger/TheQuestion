@@ -13,12 +13,14 @@ namespace TheQuestion.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IPasswordHasher<IdentityUser> _passwordHasher;
 
-        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IPasswordHasher<IdentityUser> passwordHasher)
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _roleManager = roleManager;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -48,6 +50,7 @@ namespace TheQuestion.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUser user)
         {
             var roles = await _roleManager.Roles.ToListAsync();
@@ -103,6 +106,69 @@ namespace TheQuestion.Controllers
             model.SetRoles(roles);
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditUser user)
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            user.SetRoles(roles);
+
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.Password) && user.Password != user.ConfirmPassword)
+            {
+                user.Errors = new List<IdentityError>() { new IdentityError() {
+                    Code = "PassNotConfirm",
+                    Description = "Passwords don't match."
+                } };
+
+                return View(user);
+            }
+
+            IdentityResult result;
+
+            var identityUser = await _userManager.FindByNameAsync(user.OriginalUsername);
+
+            var currentRole = (await _userManager.GetRolesAsync(identityUser))?.FirstOrDefault();
+            if (currentRole != null)
+            {
+                result = await _userManager.RemoveFromRoleAsync(identityUser, currentRole);
+                if (!result.Succeeded)
+                {
+                    user.Errors = result.Errors;
+                    return View(user);
+                }
+            }
+
+            result = await _userManager.AddToRoleAsync(identityUser, user.RoleName);
+            if (!result.Succeeded)
+            {
+                user.Errors = result.Errors;
+                return View(user);
+            }
+
+            identityUser.Email = user.Email;
+            identityUser.UserName = user.Username;
+
+            if (!string.IsNullOrWhiteSpace(user.Password))
+            {
+                identityUser.PasswordHash = _passwordHasher.HashPassword(identityUser, user.Password);
+            }
+
+            result = await _userManager.UpdateAsync(identityUser);
+            if (!result.Succeeded)
+            {
+                user.Errors = result.Errors;
+                return View(user);
+            }
+
+            return Redirect($"/user/edit/{user.Username}");
         }
     }
 }
