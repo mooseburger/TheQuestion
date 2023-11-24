@@ -13,6 +13,7 @@ namespace TheQuestion.Model.User
             Username = user.UserName;
             OriginalUsername = user.UserName;
             Email = user.Email;
+            Lockout = user.LockoutEnd.HasValue;
         }
 
         public string? OriginalUsername { get; set; }
@@ -26,5 +27,8 @@ namespace TheQuestion.Model.User
         [DataType(DataType.Password)]
         [DisplayName("Confirm Password")]
         public string? ConfirmPassword { get; set; }
+
+        [DisplayName("Lockout")]
+        public bool Lockout { get; set; }
     }
 }

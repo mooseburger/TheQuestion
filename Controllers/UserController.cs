@@ -13,14 +13,12 @@ namespace TheQuestion.Controllers
         private readonly IUserRepository _userRepository;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IPasswordHasher<IdentityUser> _passwordHasher;
 
-        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IPasswordHasher<IdentityUser> passwordHasher)
+        public UserController(IUserRepository userRepository, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userRepository = userRepository;
             _userManager = userManager;
             _roleManager = roleManager;
-            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -153,13 +151,20 @@ namespace TheQuestion.Controllers
                 return View(user);
             }
 
-            identityUser.Email = user.Email;
-            identityUser.UserName = user.Username;
-
             if (!string.IsNullOrWhiteSpace(user.Password))
             {
-                identityUser.PasswordHash = _passwordHasher.HashPassword(identityUser, user.Password);
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
+                result = await _userManager.ResetPasswordAsync(identityUser, resetToken, user.Password);
+                if (!result.Succeeded)
+                {
+                    user.Errors = result.Errors;
+                    return View(user);
+                }
             }
+
+            identityUser.Email = user.Email;
+            identityUser.UserName = user.Username;
+            identityUser.LockoutEnd = user.Lockout ? DateTimeOffset.MaxValue : null;
 
             result = await _userManager.UpdateAsync(identityUser);
             if (!result.Succeeded)
