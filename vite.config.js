@@ -14,7 +14,7 @@ export default defineConfig({
     appType: 'mpa',
     publicDir: 'public',
     build: {
-        emptyOutDir: true,
+        emptyOutDir: false,
         outDir: 'wwwroot',
         assetsDir: 'assets',
         sourcemap: true,
