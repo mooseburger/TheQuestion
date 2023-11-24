@@ -175,5 +175,15 @@ namespace TheQuestion.Controllers
 
             return Redirect($"/user/edit/{user.Username}");
         }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete([FromRoute(Name = "id")] string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            var result = await _userManager.DeleteAsync(user);
+
+            return Ok(result);
+        }
     }
 }

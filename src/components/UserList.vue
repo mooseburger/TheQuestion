@@ -9,24 +9,49 @@
             return {
                 users: [],
                 totalRecords: 0,
-                error: null
+                errors: null
             }
         },
         methods: {
             async getUserPage() {
                 try {
+                    this.errors = null;
                     const response = await fetch(`/user/getPage?pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`);
                     const paginatedResponse = await response.json();
                     this.users = paginatedResponse.page;
                     this.totalRecords = paginatedResponse.totalRecords;
                 } catch (err) {
-                    this.error = err;
+                    this.errors = [err];
                 }
             },
             async pageChange(pageNumber, pageSize) {
                 this.pageNumber = pageNumber;
                 this.pageSize = pageSize;
                 await this.getUserPage();
+            },
+            async deleteUser(username) {
+                if (this.currentUsername === username) {
+                    return;
+                }
+
+                const confirmed = confirm(`Are you sure you want to delete ${username}?`);
+                if (!confirmed) {
+                    return;
+                }
+
+                try {
+                    this.errors = null;
+                    const response = await fetch(`/user/delete/${username}`, { method: "DELETE" });
+                    const result = await response.json();
+                    if (!result.succeeded) {
+                        this.errors = result.errors;
+                        return;
+                    }
+
+                    await this.getUserPage();
+                } catch (err) {
+                    this.errors = [err];
+                }
             }
         }
     }
@@ -49,10 +74,11 @@
                 <td>{{u.roleName}}</td>
                 <td>
                     <a :href="`/user/edit/${u.username}`">Edit</a>
+                    <a v-if="u.username !== currentUsername" class="ms-3" href="#" @click="deleteUser(u.username)">Delete</a>
                 </td>
             </tr>
-            <tr v-if="error">
-                <td>{{error}}</td>
+            <tr v-for="e in errors">
+                <td>{{e}}</td>
             </tr>
         </tbody>
     </table>
