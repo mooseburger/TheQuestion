@@ -180,6 +180,15 @@ namespace TheQuestion.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute(Name = "id")] string username)
         {
+            if (HttpContext.User.Identity?.Name == username)
+            {
+                return Ok(new
+                {
+                    Succeeded = false,
+                    Errors = new List<string> { "You can't delete yourself." }
+                });
+            }
+
             var user = await _userManager.FindByNameAsync(username);
             var result = await _userManager.DeleteAsync(user);
 
