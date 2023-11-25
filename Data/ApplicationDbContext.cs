@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TheQuestion.Data.Models;
 
 namespace TheQuestion.Data
 {
@@ -17,6 +18,10 @@ namespace TheQuestion.Data
             SeedUsers(builder);
             SeedRoles(builder);
             SeedUserRoles(builder);
+
+            SetupAnswerStatuses(builder);
+
+            builder.Entity<Answer>();
         }
 
         private void SeedUsers(ModelBuilder builder)
@@ -52,6 +57,24 @@ namespace TheQuestion.Data
         {
             builder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>() { RoleId = "fab4fac1-c546-41de-aebc-a14da6895711", UserId = "b74ddd14-6340-4840-95c2-db12554843e5" }
+            );
+        }
+
+        private void SetupAnswerStatuses(ModelBuilder builder)
+        {
+            builder.Entity<AnswerStatus>().HasData(
+                new AnswerStatus() {
+                    Id = (int)AnswerStatusEnum.InReview,
+                    Name = "In Review"
+                },
+                new AnswerStatus() {
+                    Id = (int)AnswerStatusEnum.Rejected, 
+                    Name = "Rejected"
+                },
+                new AnswerStatus() {
+                    Id = (int)AnswerStatusEnum.Published,
+                    Name = "Published"
+                }
             );
         }
     }
