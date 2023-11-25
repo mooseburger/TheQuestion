@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -23,6 +23,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/auth/login";
     options.LogoutPath = "/auth/logout";
     options.AccessDeniedPath = "/auth/login";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
