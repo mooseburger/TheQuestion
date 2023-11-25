@@ -1,9 +1,11 @@
 <script>
     import Paginator from '/src/components/Paginator.vue';
+    import Alert from '/src/components/Alert.vue';
 
     export default {
         components: {
-            Paginator
+            Paginator,
+            Alert
         },
         data() {
             return {
@@ -74,13 +76,11 @@
                 <td>{{u.roleName}}</td>
                 <td>
                     <a :href="`/user/edit/${u.username}`">Edit</a>
-                    <a v-if="u.username !== currentUsername" class="ms-3" href="#" @click="deleteUser(u.username)">Delete</a>
+                    <a v-if="currentUsername !== u.username" class="ms-3" href="#" @click="deleteUser(u.username)">Delete</a>
                 </td>
-            </tr>
-            <tr v-for="e in errors">
-                <td>{{e}}</td>
             </tr>
         </tbody>
     </table>
     <Paginator :total-records="totalRecords" @page-change="pageChange"/>
+    <Alert :messages="errors"/>
 </template>
