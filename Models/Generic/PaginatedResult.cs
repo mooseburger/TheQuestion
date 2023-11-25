@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace TheQuestion.Model.Generic
+﻿namespace TheQuestion.Models.Generic
 {
     public class PaginatedResult<T>
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
 
-namespace TheQuestion.Model.Auth
+namespace TheQuestion.Models.Auth
 {
     public class ChangePassword
     {

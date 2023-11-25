@@ -1,4 +1,4 @@
-﻿namespace TheQuestion.Model.Generic
+﻿namespace TheQuestion.Models.Generic
 {
     public class PaginatedRequest
     {

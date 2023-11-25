@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace TheQuestion.Model.User
+namespace TheQuestion.Models.User
 {
     public class EditUser : User
     {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
-using TheQuestion.Model.Auth;
+using TheQuestion.Models.Auth;
 
 namespace TheQuestion.Controllers
 {

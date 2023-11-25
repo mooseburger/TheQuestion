@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace TheQuestion.Model.User
+namespace TheQuestion.Models.User
 {
     public class User
     {

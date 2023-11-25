@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using TheQuestion.Model.Generic;
-using TheQuestion.Model.User;
+using TheQuestion.Models.Generic;
+using TheQuestion.Models.User;
 
 namespace TheQuestion.Repositories
 {

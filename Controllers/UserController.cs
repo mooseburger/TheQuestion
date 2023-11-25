@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TheQuestion.Model.Generic;
-using TheQuestion.Model.User;
+using TheQuestion.Models.Generic;
+using TheQuestion.Models.User;
 using TheQuestion.Repositories;
 
 namespace TheQuestion.Controllers
