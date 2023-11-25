@@ -48,8 +48,14 @@
                                 }
                                 @if (Context.User.Identity?.IsAuthenticated == true)
                                 {
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/auth/logout">Logout</a>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                            Hello, @Context.User.Identity.Name!
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/auth/changePassword">Change Password</a></li>
+                                            <li><a class="dropdown-item" href="/auth/logout">Logout</a>
+                                        </ul>
                                     </li>
                                 }
                             </ul>
