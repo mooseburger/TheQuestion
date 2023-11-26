@@ -24,7 +24,7 @@ namespace TheQuestion.Data.Models
         public string Title { get; set; } = string.Empty;
 
         [MaxLength(1000)]
-        public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }
