@@ -134,21 +134,27 @@ namespace TheQuestion.Controllers
             var identityUser = await _userManager.FindByNameAsync(user.OriginalUsername);
 
             var currentRole = (await _userManager.GetRolesAsync(identityUser))?.FirstOrDefault();
-            if (currentRole != null)
+            if (currentRole != user.RoleName)
             {
-                result = await _userManager.RemoveFromRoleAsync(identityUser, currentRole);
-                if (!result.Succeeded)
+                if (currentRole != null)
                 {
-                    user.Errors = result.Errors;
-                    return View(user);
+                    result = await _userManager.RemoveFromRoleAsync(identityUser, currentRole);
+                    if (!result.Succeeded)
+                    {
+                        user.Errors = result.Errors;
+                        return View(user);
+                    }
                 }
-            }
 
-            result = await _userManager.AddToRoleAsync(identityUser, user.RoleName);
-            if (!result.Succeeded)
-            {
-                user.Errors = result.Errors;
-                return View(user);
+                if (!string.IsNullOrWhiteSpace(user.RoleName))
+                {
+                    result = await _userManager.AddToRoleAsync(identityUser, user.RoleName);
+                    if (!result.Succeeded)
+                    {
+                        user.Errors = result.Errors;
+                        return View(user);
+                    }
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(user.Password))
