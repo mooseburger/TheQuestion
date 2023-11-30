@@ -17,6 +17,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 
 builder.Services.ConfigureApplicationCookie(options => 
 {

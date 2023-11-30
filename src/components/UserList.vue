@@ -11,7 +11,9 @@
             return {
                 users: [],
                 totalRecords: 0,
-                errors: null
+                errors: null,
+                pageNumber: 1,
+                pageSize: 0
             }
         },
         methods: {
