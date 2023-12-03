@@ -20,10 +20,10 @@ namespace TheQuestion.Data.Models
         public string Slug { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(280)]
         public string Title { get; set; } = string.Empty;
 
-        [MaxLength(1000)]
+        [MaxLength(2000)]
         public string? Text { get; set; }
 
         [Required]
