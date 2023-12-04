@@ -38,7 +38,7 @@
                     } else if (pageNumber < this.pages[0]) {
                         this.computePagesFromStart(pageNumber);
                     }
-                    this.currentPage = pageNumber;
+                    this.currentPage = pageNumber > 0 ? pageNumber : 1;
                     this.$emit('pageChange', pageNumber, this.pageSize);
                 }
             },
@@ -65,21 +65,28 @@
 </script>
 
 <template>
-    <ul class="pagination" v-if="totalPages">
-        <li class="page-item" :class="{ disabled: currentPage === 1}">
-            <a class="page-link" @click="setPage(1)">First</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === 1}">
-            <a class="page-link" @click="setPage(currentPage - 1)">Previous</a>
-        </li>
-        <li class="page-item" :class="{ active: currentPage === p}" v-for="p in pages">
-            <a class="page-link" @click="setPage(p)">{{p}}</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a class="page-link" @click="setPage(currentPage + 1)">Next</a>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-            <a class="page-link" @click="setPage(totalPages)">Last</a>
-        </li>
-    </ul>
+    <div class="row">
+        <div class="col-md-6" v-if="totalPages">
+            <ul class="pagination" >
+                <li class="page-item" :class="{ disabled: currentPage === 1}">
+                    <a class="page-link" @click="setPage(1)">First</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === 1}">
+                    <a class="page-link" @click="setPage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" :class="{ active: currentPage === p}" v-for="p in pages">
+                    <a class="page-link" @click="setPage(p)">{{p}}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <a class="page-link" @click="setPage(currentPage + 1)">Next</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <a class="page-link" @click="setPage(totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <p class="mt-3">Total: {{totalRecords}}</p>
+        </div>
+    </div>
 </template>
