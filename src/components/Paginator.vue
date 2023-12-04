@@ -7,27 +7,55 @@
         data() {
             return {
                 pageSize: 25,
-                currentPage: 0
-            }
-        },
-        computed: {
-            pages() {
-                return [...Array(Math.ceil(this.totalRecords / this.pageSize)).keys()]
+                currentPage: 0,
+                maxPagesToDisplay: 5,
+                pages: [],
+                totalPages: 0
             }
         },
         watch: {
             totalRecords(newTotalRecords, oldTotalRecords) {
-                if (Math.ceil(newTotalRecords / this.pageSize) < this.currentPage) {
-                    this.setPage(this.pages.length);
+                if (newTotalRecords !== oldTotalRecords) {
+                    this.totalPages = Math.ceil(newTotalRecords / this.pageSize);
+
+                    if (!this.pages.length) { // Initial setup of the paginator (we didn't know how many pages there were before this)
+                        this.computePages(1, Math.min(this.totalPages, this.maxPagesToDisplay));
+                    } else if (this.pages.at(-1) > this.totalPages) { // Reset the pages being displayed, since at least one no longer exsits
+                        this.computePagesFromEnd(this.totalPages);
+                    }
+                }
+
+                if (this.totalPages < this.currentPage) {
+                    this.setPage(this.totalPages);
                 }
             }
         },
         methods: {
             setPage(pageNumber) {
                 if (pageNumber !== this.currentPage) {
+                    if (pageNumber > this.pages.at(-1)) {
+                        this.computePagesFromEnd(pageNumber);
+                    } else if (pageNumber < this.pages[0]) {
+                        this.computePagesFromStart(pageNumber);
+                    }
                     this.currentPage = pageNumber;
                     this.$emit('pageChange', pageNumber, this.pageSize);
                 }
+            },
+            computePagesFromEnd(endPage) {
+                let startPage = Math.max(endPage - this.maxPagesToDisplay + 1, 1); // Ensures start is not less than 1
+                this.computePages(startPage, endPage);
+            },
+            computePagesFromStart(startPage) {
+                let endPage = Math.min(this.totalPages, startPage + this.maxPagesToDisplay - 1);
+                this.computePages(startPage, endPage);
+            },
+            computePages(startPage, endPage) {
+                let newPages = [];
+                for (let i = startPage; i <= endPage; i++) {
+                    newPages.push(i);
+                }
+                this.pages = newPages;
             }
         },
         created() {
@@ -37,15 +65,21 @@
 </script>
 
 <template>
-    <ul class="pagination">
+    <ul class="pagination" v-if="totalPages">
+        <li class="page-item" :class="{ disabled: currentPage === 1}">
+            <a class="page-link" @click="setPage(1)">First</a>
+        </li>
         <li class="page-item" :class="{ disabled: currentPage === 1}">
             <a class="page-link" @click="setPage(currentPage - 1)">Previous</a>
         </li>
-        <li class="page-item" :class="{ active: currentPage === p + 1}" v-for="p in pages">
-            <a class="page-link" @click="setPage(p + 1)">{{p + 1}}</a>
+        <li class="page-item" :class="{ active: currentPage === p}" v-for="p in pages">
+            <a class="page-link" @click="setPage(p)">{{p}}</a>
         </li>
-        <li class="page-item" :class="{ disabled: currentPage === pages.length }" >
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
             <a class="page-link" @click="setPage(currentPage + 1)">Next</a>
+        </li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+            <a class="page-link" @click="setPage(totalPages)">Last</a>
         </li>
     </ul>
 </template>
