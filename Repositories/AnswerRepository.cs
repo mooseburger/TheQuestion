@@ -19,7 +19,7 @@ namespace TheQuestion.Repositories
         public Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
-                SELECT a.Id, a.Title, ast.Name AS Status
+                SELECT a.Id, a.Title, a.StatusId, ast.Name AS StatusName
                 FROM Answers a 
                 LEFT JOIN AnswerStatuses ast ON a.StatusId = ast.Id
             ";
