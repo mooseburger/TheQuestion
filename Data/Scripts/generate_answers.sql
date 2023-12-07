@@ -1,25 +1,9 @@
 declare @max int = 200;
  
-with Titles(Title,StatusId) as
+with Statuses(StatusId) as
 (
-    SELECT N'DARK SATANIC MILLS'       , 1   UNION ALL
-    SELECT N'Arise To Spiritual Strife'        , 2   UNION ALL
-    SELECT N'On A Cloud I Saw A Child'      , 3 UNION ALL
-    SELECT N'Tools Were Made And Born Were Hands'       , 1   UNION ALL
-    SELECT N'Never Seek To Tell Thy Love'  , 2   UNION ALL
-    SELECT N'Till We Have Built Jerusalem'       , 3   UNION ALL
-    SELECT N'The Perishing Vegetable Memory', 1   UNION ALL
-    SELECT N'Laughing To Scorn Thy Laws And Terrors'     , 2   UNION ALL
-    SELECT N'With Art Celestial'    , 3 UNION ALL
-    SELECT N'Bring The Swift Arrows Of Light'       , 1   UNION ALL
-    SELECT N'Drive The Just Man Into Barren Climes'  , 2 UNION ALL
-    SELECT N'Borne On Angels’ Wings'     , 3 UNION ALL
-    SELECT N'The Image Of Eternal Death'  , 1 UNION ALL
-    SELECT N'Cruelty Has A Human Heart'       , 2 UNION ALL
-    SELECT N'O Where Shall I Hide My Face'       , 3 UNION ALL
-    SELECT N'If Perchance With Iron Power He Might Avert His Own Despair'      , 1 UNION ALL
-    SELECT N'No Earthly Parents I Confess'      , 2 UNION ALL
-    SELECT N'That The Children Of Jerusalem May Be Saved From Slavery'    , 3
+    SELECT 1   UNION ALL
+    SELECT 2 
 )
 , Texts(Text) as
 (
@@ -46,43 +30,29 @@ God is awesome in majesty and infinite in glory. He’s not going to have a stupid
     
  
 )
-, SortedAnswers(Title, Text, StatusId, RowNum) as  -- This code will generate Sorted Names
+, SortedAnswers(Text, StatusId, RowNum) as  -- This code will generate Sorted Names
 (
    /* Number of records from this Select will be: Number of Male records in FirstName WITH clause Multiplied By Number of records IN LastNames WITH clause*/
     select
-           Title
-         , Text
+           Text
          , StatusId
          , ROW_NUMBER() over (Order by newid())
-    from Titles
+    from Statuses
     cross join Texts
     where StatusId = 1
    UNION
    /* Number of records from this Select will be: Number of Female records in FirstName WITH clause Multiplied By Number of records IN LastNames WITH clause*/
     select
-           Title
-         , Text
+           Text
          , StatusId
          , ROW_NUMBER() over (Order by newid())
-    from Titles
+    from Statuses
     cross join Texts
     where StatusId = 2
-   UNION
-   /* Number of records from this Select will be: Number of Null Gender records in FirstName WITH clause Multiplied By Number of records IN LastNames WITH clause*/
-    select
-           Title
-         , Text
-         , StatusId
-         , ROW_NUMBER() over (Order by newid())
-    from Titles
-    cross join Texts
-    where StatusId = 3
 ),
 Answers AS
 (
-    select     
-         Title
-       , Text
+    select Text
        , StatusId
     from SortedAnswers
 )
@@ -94,9 +64,9 @@ Answers AS
    FROM Multiplier
    WHERE N < @max
  )
-INSERT INTO [dbo].[Answers](StatusId,Slug,Title,Text,CreatedDate)
+INSERT INTO [dbo].[AnswerQueue](AnswerStatusId,Text,CreatedDate,ModifiedDate)
 select 
-	StatusId, LOWER(Substring(REPLACE(Title, ' ', '-'), 1, 40) + '-' + CAST(ROW_NUMBER() over (Order by newid()) AS nvarchar)) Slug, Title, Text, DATEADD(DAY, ABS(CHECKSUM(NEWID()) % 36500), '2020-1-1') CreatedDate /* Generate random dates between 2020-1-1 and 2140-01-01; 36500 is around 100 years*/
+	StatusId,Text, DATEADD(DAY, ABS(CHECKSUM(NEWID()) % 36500), '2020-1-1') CreatedDate, DATEADD(DAY, ABS(CHECKSUM(NEWID()) % 36500), '2020-1-1') ModifiedDate /* Generate random dates between 2020-1-1 and 2140-01-01; 36500 is around 100 years*/
 from Answers
 cross join Multiplier /*To cross multiply Names WITH clause that returns 198 random {FirstName LastName with gender} combinations with the number that we specify in @max parameter*/
 order by NEWID()

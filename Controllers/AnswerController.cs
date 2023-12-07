@@ -71,7 +71,7 @@ namespace TheQuestion.Controllers
         [Authorize(Roles = "Admin,Reviewer")]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _answerRepository.GetById(id);
+            var model = await _answerRepository.GetFromQueueById(id);
             var statuses = await _answerRepository.GetAnswerStatuses();
             model.SetStatuses(statuses);
 

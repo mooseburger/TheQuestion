@@ -16,22 +16,54 @@ namespace TheQuestion.Repositories
         
         Task<int> CreateAnswer(CreateAnswer answer);
 
-        Task<EditAnswer> GetById(int id);
+        Task<EditAnswer> GetFromQueueById(int id);
     }
 
     public class AnswerRepository : BaseRepository, IAnswerRepository
     {
         public AnswerRepository(IConfiguration configuration) : base(configuration) { }
 
-        public Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
+        public async Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
-                SELECT a.Id, a.Title, a.StatusId, ast.Name AS StatusName
-                FROM Answers a 
-                LEFT JOIN AnswerStatuses ast ON a.StatusId = ast.Id
+                SELECT a.Id, SUBSTRING(a.Text, 1, 50) as Text, a.AnswerStatusId, ast.Name AS StatusName
+                FROM AnswerQueue a 
+                LEFT JOIN AnswerStatuses ast ON a.AnswerStatusId = ast.Id
             ";
 
-            return GetAnswerPage<AnswerList>(mainSql, status, sortDirection, paginatedRequest);
+            string whereClause = string.Empty;
+            if (status.HasValue)
+            {
+                whereClause = "WHERE a.AnswerStatusId = @status";
+            }
+
+            string orderByClause = $"ORDER BY a.Id {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
+
+            using var connection = GetConnection();
+
+            string pageSql = @$"
+                {mainSql}
+                {whereClause}
+                {orderByClause}
+                OFFSET @offset ROWS 
+                FETCH NEXT @pageSize ROWS ONLY
+            ";
+
+            var page = await connection.QueryAsync<AnswerList>(pageSql, new
+            {
+                status,
+                offset = paginatedRequest.Offset,
+                pageSize = paginatedRequest.PageSize
+            });
+
+            string totalResultsSql = $"SELECT COUNT(*) FROM AnswerQueue a {whereClause}";
+            int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql, new { status });
+
+            return new PaginatedResult<AnswerList>
+            {
+                Page = page,
+                TotalRecords = totalResults
+            };
         }
 
         public async Task<IEnumerable<AnswerStatusDto>> GetAnswerStatuses()
@@ -48,110 +80,30 @@ namespace TheQuestion.Repositories
             return statuses;
         }
 
-        private async Task<PaginatedResult<T>> GetAnswerPage<T>(string mainSql, AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest) where T : class
-        {
-            string whereClause = string.Empty;
-            if (status.HasValue)
-            {
-                whereClause = "WHERE StatusId = @status";
-            }
-
-            string orderByClause = $"ORDER BY a.Id {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
-
-            using var connection = GetConnection();
-
-            string pageSql = @$"
-                {mainSql}
-                {whereClause}
-                {orderByClause}
-                OFFSET @offset ROWS 
-                FETCH NEXT @pageSize ROWS ONLY
-            ";
-
-            var page = await connection.QueryAsync<T>(pageSql, new
-            {
-                status,
-                offset = paginatedRequest.Offset,
-                pageSize = paginatedRequest.PageSize
-            });
-
-            string totalResultsSql = $"SELECT COUNT(*) FROM Answers {whereClause}";
-            int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql, new { status });
-
-            return new PaginatedResult<T>
-            {
-                Page = page,
-                TotalRecords = totalResults
-            };
-        }
-
         public async Task<int> CreateAnswer(CreateAnswer model)
         {
-            var answer = new Answer()
+            var answer = new AnswerQueue()
             {
-                StatusId = model.StatusId,
-                Title = model.Title,
-                Text = model.Text,
-                Slug = GenerateSlug(model.Title)
+                AnswerStatusId = (int)AnswerStatusEnum.InReview,
+                Text = model.Text
             };
 
             using var connection = GetConnection();
 
-            await GuaranteeUniqueSlug(connection, answer);
-
-            int id = connection.QuerySingle<int>(@"
+            int id = await connection.QuerySingleAsync<int>(@"
                 INSERT INTO Answers
-                (StatusId, Slug, Title, Text, CreatedDate, ModifiedDate)
+                (AnswerStatusId, CreatedDate, ModifiedDate)
                 OUTPUT INSERTED.Id
-                VALUES (@StatusId, @Slug, @Title, @Text, GETDATE(), GETDATE());", answer);
+                VALUES (@AnswerStatusId, @Text, GETDATE(), GETDATE());", answer);
 
             return id;
         }
 
-        public Task<EditAnswer> GetById(int id)
+        public Task<EditAnswer> GetFromQueueById(int id)
         {
             using var connection = GetConnection();
 
-            return connection.QueryFirstAsync<EditAnswer>($"SELECT * FROM Answers WHERE Id = @id", new { id });
-        }
-
-        private string GenerateSlug(string phrase)
-        {
-            string str = RemoveAccent(phrase).ToLower();
-
-            str = Regex.Replace(str, @"[^a-z0-9\s-]", ""); // invalid chars
-            str = Regex.Replace(str, @"\s+", " ").Trim(); // convert multiple spaces into one space
-            str = str.Substring(0, str.Length <= 40 ? str.Length : 40).Trim(); // cut and trim it
-            str = Regex.Replace(str, @"\s", "-"); // hyphens
-
-            return str;
-        }
-
-        private string RemoveAccent(string txt)
-        {
-            byte[] bytes = System.Text.Encoding.GetEncoding("UTF-8").GetBytes(txt);
-            return System.Text.Encoding.ASCII.GetString(bytes);
-        }
-
-        private async Task GuaranteeUniqueSlug(SqlConnection connection, Answer answer)
-        {
-            var matchingAnswer = await GetBySlug(connection, answer.Slug, null);
-            while (matchingAnswer != null)
-            {
-                answer.Slug += "-" + Guid.NewGuid().ToString().Split('-')[0];
-                matchingAnswer = await GetBySlug(connection, answer.Slug, null);
-            }
-        }
-
-        private Task<Answer> GetBySlug(SqlConnection connection, string slug, AnswerStatusEnum? status)
-        {
-            string statusClause = string.Empty;
-            if (status.HasValue)
-            {
-                statusClause = "AND StatusId = @status";
-            }
-
-            return connection.QueryFirstAsync<Answer>($"SELECT * FROM Answers WHERE Slug = @slug {statusClause}", new { slug, status });
+            return connection.QueryFirstAsync<EditAnswer>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
         }
     }
 }

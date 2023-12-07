@@ -21,6 +21,11 @@ namespace TheQuestion.Data
 
             SetupAnswerStatuses(builder);
 
+            builder.Entity<AnswerQueue>()
+                .HasOne<AnswerStatus>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Answer>();
         }
 
@@ -70,10 +75,6 @@ namespace TheQuestion.Data
                 new AnswerStatus() {
                     Id = (int)AnswerStatusEnum.Rejected, 
                     Name = "Rejected"
-                },
-                new AnswerStatus() {
-                    Id = (int)AnswerStatusEnum.Published,
-                    Name = "Published"
                 }
             );
         }

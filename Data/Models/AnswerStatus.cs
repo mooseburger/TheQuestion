@@ -17,7 +17,6 @@ namespace TheQuestion.Data.Models
     public enum AnswerStatusEnum : int
     {
         InReview = 1,
-        Rejected = 2,
-        Published = 3
+        Rejected = 2
     }
 }

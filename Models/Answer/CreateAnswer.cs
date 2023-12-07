@@ -6,14 +6,8 @@ namespace TheQuestion.Models.Answer
     public class CreateAnswer
     {
         [Required]
-        public int StatusId { get; set; }
-
-        [Required]
-        [MaxLength(280)]
-        public string Title { get; set; } = string.Empty;
-
         [MaxLength(2000)]
-        public string? Text { get; set; }
+        public string Text { get; set; }
 
         public List<SelectListItem>? Statuses { get; set; } = null;
 

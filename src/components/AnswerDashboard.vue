@@ -60,7 +60,7 @@
                 await this.getAnswerPage();
             },
             async deleteAnswer(answer) {
-                if (answer.statusId === this.rejectedStatusId)
+                if (answer.answerStatusId === this.rejectedStatusId)
                     return;
 
                 this.errors = null;
@@ -110,18 +110,18 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Title</th>
+                <th>Text</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="a in answers">
-                <td>{{a.title}}</td>
+                <td>{{a.text}}</td>
                 <td>{{a.statusName}}</td>
                 <td>
                     <a :href="`/answer/edit/${a.id}`">Edit</a>
-                    <a v-if="rejectedStatusId === a.statusId" class="ms-3" href="#" @click="deleteAnswer(a)">Delete</a>
+                    <a v-if="rejectedStatusId === a.answerStatusId" class="ms-3" href="#" @click="deleteAnswer(a)">Delete</a>
                 </td>
             </tr>
         </tbody>
