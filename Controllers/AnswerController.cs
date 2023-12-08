@@ -42,24 +42,20 @@ namespace TheQuestion.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             var model = new CreateAnswer();
-            var statuses = await _answerRepository.GetAnswerStatuses();
-            model.SetStatuses(statuses);
             
             return View(model);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateAnswer model)
         {
             if (!ModelState.IsValid)
             {
-                var statuses = await _answerRepository.GetAnswerStatuses();
-                model.SetStatuses(statuses);
-
                 return View(model);
             }
 
@@ -72,10 +68,57 @@ namespace TheQuestion.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _answerRepository.GetFromQueueById(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
             var statuses = await _answerRepository.GetAnswerStatuses();
             model.SetStatuses(statuses);
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Reviewer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditAnswer model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var statuses = await _answerRepository.GetAnswerStatuses();
+                model.SetStatuses(statuses);
+
+                return View(model);
+            }
+
+            if (model.Publish)
+            {
+                string error = await _answerRepository.PublishAnswer(model);
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    var statuses = await _answerRepository.GetAnswerStatuses();
+                    model.SetStatuses(statuses);
+                    model.Errors = new List<string> { error };
+                    return View(model);
+                }
+            }
+
+            else
+            {
+                await _answerRepository.EditAnswerInQueue(model);
+            }
+            
+            return Redirect("/answer/dashboard");
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            string error = await _answerRepository.DeleteAnswerInQueue(id);
+
+            return Ok(new { succeeded = string.IsNullOrWhiteSpace(error), error });
         }
     }
 }

@@ -15,5 +15,6 @@ if (userListContainer) {
 const answerDashboardContainer = document.getElementById("answer-dashboard");
 if (answerDashboardContainer) {
     const app = createApp(AnswerDashboard);
+    app.config.globalProperties.isAdmin = answerDashboardContainer.dataset.isadmin.toLowerCase() === 'true';
     app.mount(answerDashboardContainer);
 }

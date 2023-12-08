@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using TheQuestion.Models.Answer;
+
+@model EditAnswer
+
+<script>
+    function publishConfirmation(e) {
+        const publishRequested = document.getElementById("Publish").checked;
+        if (publishRequested) {
+            const approved = window.confirm('Are you sure you want to publish this answer? No backsies!');
+            if (approved) {
+                return true;
+            } else {
+                e.preventDefault();
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-controller="Answer" asp-action="Edit" method="post" class="mb-3" onsubmit="return publishConfirmation(event);">
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="CreatedDate"/>
+                    <div class="mb-3">
+                        <label asp-for="Text" class="form-label"></label>
+                        <textarea class="form-control" asp-for="Text" rows="25"></textarea>
+                        <span class="text-danger" asp-validation-for="Text"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="AnswerStatusId" class="form-label"></label>
+                        <select type="text" class="form-select" asp-for="AnswerStatusId" asp-items="Model.Statuses"></select>
+                        <span class="text-danger" asp-validation-for="AnswerStatusId"></span>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="Publish" />
+                        <label asp-for="Publish" class="form-check-label"></label>
+                        <span class="text-danger" asp-validation-for="Publish"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <a href="/answer/dashboard" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+        @if (Model.Errors?.Any() == true)
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    @foreach (var error in Model.Errors)
+                    {
+                        <p class="text-danger mb-3">@error</p>
+                    }
+                </div>
+            </div>
+        }
+    </main>
+</div>

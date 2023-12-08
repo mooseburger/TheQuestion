@@ -16,7 +16,11 @@ namespace TheQuestion.Repositories
         
         Task<int> CreateAnswer(CreateAnswer answer);
 
-        Task<EditAnswer> GetFromQueueById(int id);
+        Task<EditAnswer?> GetFromQueueById(int id);
+
+        Task<string> PublishAnswer(EditAnswer answer);
+        Task EditAnswerInQueue(EditAnswer answer);
+        Task<string> DeleteAnswerInQueue(int id);
     }
 
     public class AnswerRepository : BaseRepository, IAnswerRepository
@@ -26,7 +30,7 @@ namespace TheQuestion.Repositories
         public async Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
-                SELECT a.Id, SUBSTRING(a.Text, 1, 50) as Text, a.AnswerStatusId, ast.Name AS StatusName
+                SELECT a.Id, SUBSTRING(a.Text, 1, 50) as Text, a.AnswerStatusId AS StatusId, ast.Name AS StatusName
                 FROM AnswerQueue a 
                 LEFT JOIN AnswerStatuses ast ON a.AnswerStatusId = ast.Id
             ";
@@ -90,20 +94,78 @@ namespace TheQuestion.Repositories
 
             using var connection = GetConnection();
 
-            int id = await connection.QuerySingleAsync<int>(@"
-                INSERT INTO Answers
-                (AnswerStatusId, CreatedDate, ModifiedDate)
+            int id = await connection.ExecuteScalarAsync<int>(@"
+                INSERT INTO AnswerQueue
+                (AnswerStatusId, Text, CreatedDate, ModifiedDate)
                 OUTPUT INSERTED.Id
                 VALUES (@AnswerStatusId, @Text, GETDATE(), GETDATE());", answer);
 
             return id;
         }
 
-        public Task<EditAnswer> GetFromQueueById(int id)
+        public async Task<EditAnswer?> GetFromQueueById(int id)
         {
             using var connection = GetConnection();
 
-            return connection.QueryFirstAsync<EditAnswer>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+            var model = await connection.QueryFirstOrDefaultAsync<EditAnswer>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+
+            return model;
+        }
+
+        public async Task<string> PublishAnswer(EditAnswer answer)
+        {
+            using var connection = GetConnection();
+
+            var answerInQueue = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = answer.Id });
+            if (answerInQueue == null)
+            {
+                return "Answer not found";
+            }
+
+            int newAnswerId = await connection.ExecuteScalarAsync<int>(@"
+                INSERT INTO Answers
+                (Text, CreatedDate, PublishedDate)
+                OUTPUT INSERTED.Id
+                VALUES (@Text, @CreatedDate, GETDATE())
+            ", answer);
+
+            if (newAnswerId > 0)
+            {
+                await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id = answer.Id });
+            }
+
+            return string.Empty;
+        }
+
+        public async Task EditAnswerInQueue(EditAnswer answer)
+        {
+            using var connection = GetConnection();
+
+            await connection.ExecuteAsync(@"
+                UPDATE AnswerQueue
+                SET Text = @Text, AnswerStatusId = @AnswerStatusId, ModifiedDate = GETDATE()
+                WHERE Id = @Id
+            ", answer);
+        }
+
+        public async Task<string> DeleteAnswerInQueue(int id)
+        {
+            using var connection = GetConnection();
+
+            var answer = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+            if (answer == null)
+            {
+                return "Answer not found";
+            }
+
+            if (answer.AnswerStatusId != (int)AnswerStatusEnum.Rejected)
+            {
+                return "Only rejected answers can be deleted";
+            }
+
+            await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id });
+
+            return string.Empty;
         }
     }
 }

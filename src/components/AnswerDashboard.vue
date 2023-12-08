@@ -64,7 +64,7 @@
                     return;
 
                 this.errors = null;
-                const confirmed = confirm(`Are you sure you want to delete answer ${answer.title}?`);
+                const confirmed = confirm(`Are you sure you want to delete answer ${answer.text}?`);
                 if (!confirmed) {
                     return;
                 }
@@ -74,7 +74,7 @@
                     const response = await fetch(`/answer/delete/${answer.id}`, { method: "DELETE" });
                     const result = await response.json();
                     if (!result.succeeded) {
-                        this.errors = result.errors;
+                        this.errors = [result.error];
                         return;
                     }
 
@@ -121,7 +121,7 @@
                 <td>{{a.statusName}}</td>
                 <td>
                     <a :href="`/answer/edit/${a.id}`">Edit</a>
-                    <a v-if="rejectedStatusId === a.answerStatusId" class="ms-3" href="#" @click="deleteAnswer(a)">Delete</a>
+                    <a v-if="isAdmin && rejectedStatusId === a.statusId" class="ms-3" href="#" @click="deleteAnswer(a)">Delete</a>
                 </td>
             </tr>
         </tbody>
