@@ -109,6 +109,13 @@ namespace TheQuestion.Controllers
                 await _answerRepository.EditAnswerInQueue(model);
             }
             
+            if (model.Next)
+            {
+                int nextId = await _answerRepository.GetNextAnswerIdInQueue(model.Id);
+
+                return Redirect($"/answer/edit/{nextId}");
+            }
+
             return Redirect("/answer/dashboard");
         }
 

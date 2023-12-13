@@ -21,6 +21,7 @@ namespace TheQuestion.Repositories
         Task<string> PublishAnswer(EditAnswer answer);
         Task EditAnswerInQueue(EditAnswer answer);
         Task<string> DeleteAnswerInQueue(int id);
+        Task<int> GetNextAnswerIdInQueue(int id);
     }
 
     public class AnswerRepository : BaseRepository, IAnswerRepository
@@ -166,6 +167,20 @@ namespace TheQuestion.Repositories
             await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id });
 
             return string.Empty;
+        }
+
+        public async Task<int> GetNextAnswerIdInQueue(int id)
+        {
+            using var connection = GetConnection();
+
+            int nextId = await connection.ExecuteScalarAsync<int>(@"
+                SELECT TOP 1 Id
+                FROM AnswerQueue
+                WHERE Id > @sourceId AND AnswerStatusId = @inReviewId
+                ORDER BY Id ASC
+            ", new { sourceId = id, inReviewId = AnswerStatusEnum.InReview });
+
+            return nextId;
         }
     }
 }

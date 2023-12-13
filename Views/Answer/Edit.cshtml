@@ -6,7 +6,7 @@
     function publishConfirmation(e) {
         const publishRequested = document.getElementById("Publish").checked;
         if (publishRequested) {
-            const approved = window.confirm('Are you sure you want to publish this answer? No backsies!');
+            const approved = window.confirm('Are you sure you want to publish this answer? No taking it back!');
             if (approved) {
                 return true;
             } else {
@@ -17,15 +17,22 @@
 
         return true;
     }
+
+    function goToNext(e) {
+        const editForm = document.getElementById("editForm");
+        const nextInput = document.getElementById("Next");
+        nextInput.value = "True";
+    }
 </script>
 
 <div class="container">
     <main role="main" class="pb-3">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form asp-controller="Answer" asp-action="Edit" method="post" class="mb-3" onsubmit="return publishConfirmation(event);">
+                <form id="editForm" asp-controller="Answer" asp-action="Edit" method="post" class="mb-3" onsubmit="return publishConfirmation(event);">
                     <input type="hidden" asp-for="Id"/>
                     <input type="hidden" asp-for="CreatedDate"/>
+                    <input type="hidden" asp-for="Next"/>
                     <div class="mb-3">
                         <label asp-for="Text" class="form-label"></label>
                         <textarea class="form-control" asp-for="Text" rows="25"></textarea>
@@ -41,6 +48,7 @@
                         <label asp-for="Publish" class="form-check-label"></label>
                         <span class="text-danger" asp-validation-for="Publish"></span>
                     </div>
+                    <button type="submit" class="btn btn-primary" onclick="goToNext(event)">Next</button>
                     <button type="submit" class="btn btn-primary">Edit</button>
                     <a href="/answer/dashboard" class="btn btn-outline-secondary">Cancel</a>
                 </form>

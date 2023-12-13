@@ -16,6 +16,8 @@ namespace TheQuestion.Models.Answer
         [DisplayName("Publish")]
         public bool Publish {  get; set; }
 
+        public bool Next { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public List<SelectListItem>? Statuses { get; set; } = null;
