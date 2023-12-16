@@ -112,8 +112,10 @@ namespace TheQuestion.Controllers
             if (model.Next)
             {
                 int nextId = await _answerRepository.GetNextAnswerIdInQueue(model.Id);
-
-                return Redirect($"/answer/edit/{nextId}");
+                if (nextId > 0)
+                {
+                    return Redirect($"/answer/edit/{nextId}");
+                }
             }
 
             return Redirect("/answer/dashboard");
