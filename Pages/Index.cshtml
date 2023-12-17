@@ -5,7 +5,31 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="container">
+<div class="container main">
     @await Html.PartialAsync("_PageHeading", new PageHeading() { Title = "The Question" })
+    
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <h1 class="the-question">What do you wish that everybody knew?</h1>
+        </div>
+    </div>
+ 
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10">
+            <p class="homepage-blurb">
+                There is so much confusion. So much disorder. Only the truth can sort out this mess.
+                So about how we reveal the truth? What is a big thing you have understood, something so true and so right,
+                that everyone should know it? The time has come to share it, because we really need to know it.
+            </p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <a class="btn btn-primary" href="/answer/submit">Share With Everyone</a>
+        </div>
+    </div>
+
+
 </div>
 

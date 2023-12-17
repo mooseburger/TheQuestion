@@ -1,7 +1,44 @@
 @import 'boring.scss';
 
+body {
+    font-family: Tajawal;
+}
+
 .navbar {
     > .container {
         display: block;
     }
+}
+
+.main {
+    margin-bottom: 5rem;
+}
+
+.page-heading-title {
+    font-size: 48px;
+    font-weight: 500;
+    color: $font-primary;
+    margin-bottom: 0;
+}
+
+.the-question {
+    text-align: center;
+    font-size: 90px;
+    font-weight: 300;
+    color: $font-primary;
+}
+
+.homepage-blurb {
+    font-size: 25px;
+    text-align: center;
+    color: $heading-black;
+}
+
+.btn-primary {
+    background-color: $button-primary;
+    border-radius: 70px;
+    color: $white;
+    font-size: 35px;
+    font-weight: bold;
+    padding: 22px 40px;
 }
