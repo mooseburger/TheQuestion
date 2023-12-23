@@ -1,16 +1,13 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using System.Text.RegularExpressions;
 using TheQuestion.Data.Models;
 using TheQuestion.Models.Answer;
 using TheQuestion.Models.Generic;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TheQuestion.Repositories
 {
     public interface IAnswerRepository
     {
-        Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest);
+        Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest);
 
         Task<IEnumerable<AnswerStatusDto>> GetAnswerStatuses();
         
@@ -19,16 +16,23 @@ namespace TheQuestion.Repositories
         Task<EditAnswer?> GetFromQueueById(int id);
 
         Task<PublishedAnswer> PublishAnswer(EditAnswer answer);
+
         Task EditAnswerInQueue(EditAnswer answer);
+
         Task<string> DeleteAnswerInQueue(int id);
+
         Task<int> GetNextAnswerIdInQueue(int id);
+
+        Task<PaginatedResult<AnswerTable>> GetAnswerTablePage(SortDirection sortDirection, PaginatedRequest paginatedRequest);
+
+        Task<ViewAnswer> GetAnswerView(int id);
     }
 
     public class AnswerRepository : BaseRepository, IAnswerRepository
     {
         public AnswerRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<PaginatedResult<AnswerList>> GetAnswerListPage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
+        public async Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
                 SELECT a.Id, SUBSTRING(a.Text, 1, 50) as Text, a.AnswerStatusId AS StatusId, ast.Name AS StatusName
@@ -54,7 +58,7 @@ namespace TheQuestion.Repositories
                 FETCH NEXT @pageSize ROWS ONLY
             ";
 
-            var page = await connection.QueryAsync<AnswerList>(pageSql, new
+            var page = await connection.QueryAsync<AnswerQueueTable>(pageSql, new
             {
                 status,
                 offset = paginatedRequest.Offset,
@@ -64,7 +68,7 @@ namespace TheQuestion.Repositories
             string totalResultsSql = $"SELECT COUNT(*) FROM AnswerQueue a {whereClause}";
             int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql, new { status });
 
-            return new PaginatedResult<AnswerList>
+            return new PaginatedResult<AnswerQueueTable>
             {
                 Page = page,
                 TotalRecords = totalResults
@@ -87,7 +91,7 @@ namespace TheQuestion.Repositories
 
         public async Task<int> CreateAnswer(CreateAnswer model)
         {
-            var answer = new AnswerQueue()
+            var answer = new Data.Models.AnswerQueue()
             {
                 AnswerStatusId = (int)AnswerStatusEnum.InReview,
                 Text = model.Text
@@ -117,7 +121,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var answerInQueue = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
+            var answerInQueue = await connection.QueryFirstOrDefaultAsync<Data.Models.AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
             if (answerInQueue == null)
             {
                 return new PublishedAnswer() { Error = "Answer not found" };
@@ -161,7 +165,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var answer = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+            var answer = await connection.QueryFirstOrDefaultAsync<Data.Models.AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
             if (answer == null)
             {
                 return "Answer not found";
@@ -189,6 +193,49 @@ namespace TheQuestion.Repositories
             ", new { sourceId = id, inReviewId = AnswerStatusEnum.InReview });
 
             return nextId;
+        }
+
+        public async Task<PaginatedResult<AnswerTable>> GetAnswerTablePage(SortDirection sortDirection, PaginatedRequest paginatedRequest)
+        {
+            string mainSql = @"
+                SELECT Id, SUBSTRING(Text, 1, 50) as Text
+                FROM Answers
+            ";
+
+            string orderByClause = $"ORDER BY Id {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
+
+            using var connection = GetConnection();
+
+            string pageSql = @$"
+                {mainSql}
+                {orderByClause}
+                OFFSET @offset ROWS 
+                FETCH NEXT @pageSize ROWS ONLY
+            ";
+
+            var page = await connection.QueryAsync<AnswerTable>(pageSql, new
+            {
+                offset = paginatedRequest.Offset,
+                pageSize = paginatedRequest.PageSize
+            });
+
+            string totalResultsSql = $"SELECT COUNT(*) FROM Answers";
+            int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql);
+
+            return new PaginatedResult<AnswerTable>
+            {
+                Page = page,
+                TotalRecords = totalResults
+            };
+        }
+
+        public async Task<ViewAnswer> GetAnswerView(int id)
+        {
+            using var connection = GetConnection();
+
+            var answer = await connection.QueryFirstAsync<ViewAnswer>("SELECT * FROM Answers WHERE Id = @id", new { id });
+
+            return answer;
         }
     }
 }

@@ -42,7 +42,7 @@
             async getAnswerPage() {
                 try {
                     this.errors = null;
-                    const response = await fetch(`/answer/getPage?statusId=${this.statusId}&sortDirection=${this.sortDirection}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`);
+                    const response = await fetch(`/answer/getQueuePage?statusId=${this.statusId}&sortDirection=${this.sortDirection}&pageNumber=${this.pageNumber}&pageSize=${this.pageSize}`);
                     const paginatedResponse = await response.json();
                     this.answers = paginatedResponse.page;
                     this.totalRecords = paginatedResponse.totalRecords;

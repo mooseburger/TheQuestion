@@ -28,7 +28,7 @@
 <div class="container">
     <main role="main" class="pb-3">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <form id="editForm" asp-controller="Answer" asp-action="Edit" method="post" class="mb-3" onsubmit="return publishConfirmation(event);">
                     <input type="hidden" asp-for="Id"/>
                     <input type="hidden" asp-for="CreatedDate"/>
@@ -57,7 +57,7 @@
         @if (Model.Errors?.Any() == true)
         {
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     @foreach (var error in Model.Errors)
                     {
                         <p class="text-danger mb-3">@error</p>

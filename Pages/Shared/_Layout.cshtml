@@ -41,12 +41,6 @@
                                         <a class="nav-link" href="/answer/dashboard">Review</a>
                                     </li>
                                 }
-                                @if (Context.User.IsInRole("Admin"))
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/user">Users</a>
-                                    </li>
-                                }
                                 @if (Context.User.Identity?.IsAuthenticated == true)
                                 {
                                     <li class="nav-item dropdown">
@@ -54,6 +48,11 @@
                                             Hello, @Context.User.Identity.Name!
                                         </a>
                                         <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="/answer/table">Answers</a></li>
+                                            @if (Context.User.IsInRole("Admin"))
+                                            {
+                                                <li><a class="dropdown-item" href="/user">Users</a></li>
+                                            }
                                             <li><a class="dropdown-item" href="/auth/changePassword">Change Password</a></li>
                                             <li><a class="dropdown-item" href="/auth/logout">Logout</a>
                                         </ul>

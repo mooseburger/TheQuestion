@@ -1,0 +1,23 @@
+﻿@{
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @{
+            bool isAdmin = Context.User.IsInRole("Admin");
+        }
+        @if (isAdmin)
+        {
+            <div class="row justify-content-end mb-3">
+                <div class="col-md-3">
+                    <a class="btn btn-primary" href="/answer/bulkReindex">Reindex All Answers</a>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-12">
+                <div id="answer-table"></div>
+            </div>
+        </div>
+    </main>
+</div>

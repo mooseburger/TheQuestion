@@ -37,9 +37,9 @@ namespace TheQuestion.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Reviewer")]
-        public async Task<IActionResult> GetPage(AnswerStatusEnum? statusId, SortDirection sortDirection, [FromQuery] PaginatedRequest request)
+        public async Task<IActionResult> GetQueuePage(AnswerStatusEnum? statusId, SortDirection sortDirection, [FromQuery] PaginatedRequest request)
         {
-            var result = await _answerRepository.GetAnswerListPage(statusId, sortDirection, request);
+            var result = await _answerRepository.GetAnswerQueuePage(statusId, sortDirection, request);
             return Ok(result);
         }
 
@@ -136,6 +136,45 @@ namespace TheQuestion.Controllers
             string error = await _answerRepository.DeleteAnswerInQueue(id);
 
             return Ok(new { succeeded = string.IsNullOrWhiteSpace(error), error });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Reviewer")]
+        public IActionResult Table()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Reviewer")]
+        public async Task<IActionResult> GetTablePage(SortDirection sortDirection, [FromQuery] PaginatedRequest request)
+        {
+            var result = await _answerRepository.GetAnswerTablePage(sortDirection, request);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Reviewer")]
+        public async Task<IActionResult> View(int id)
+        {
+            var answer = await _answerRepository.GetAnswerView(id);
+
+            return View(answer);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Reviewer")]
+        public async Task<IActionResult> Reindex(int id)
+        {
+            var answer = await _answerRepository.GetAnswerView(id);
+            if (answer == null)
+            {
+                return NotFound();
+            }
+
+            await _searchService.IndexAnswer(answer);
+
+            return Ok();
         }
     }
 }

@@ -4,6 +4,7 @@ import './assets/line-left.svg';
 import './assets/line-right.svg';
 import UserList from './components/UserList.vue';
 import AnswerDashboard from './components/AnswerDashboard.vue';
+import AnswerTable from './components/AnswerTable.vue';
 
 import { createApp } from 'vue'
 
@@ -19,4 +20,10 @@ if (answerDashboardContainer) {
     const app = createApp(AnswerDashboard);
     app.config.globalProperties.isAdmin = answerDashboardContainer.dataset.isadmin.toLowerCase() === 'true';
     app.mount(answerDashboardContainer);
+}
+
+const answerTableContainer = document.getElementById("answer-table");
+if (answerTableContainer) {
+    const app = createApp(AnswerTable);
+    app.mount(answerTableContainer);
 }
