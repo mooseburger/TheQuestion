@@ -18,7 +18,7 @@ namespace TheQuestion.Repositories
 
         Task<EditAnswer?> GetFromQueueById(int id);
 
-        Task<string> PublishAnswer(EditAnswer answer);
+        Task<PublishedAnswer> PublishAnswer(EditAnswer answer);
         Task EditAnswerInQueue(EditAnswer answer);
         Task<string> DeleteAnswerInQueue(int id);
         Task<int> GetNextAnswerIdInQueue(int id);
@@ -113,29 +113,37 @@ namespace TheQuestion.Repositories
             return model;
         }
 
-        public async Task<string> PublishAnswer(EditAnswer answer)
+        public async Task<PublishedAnswer> PublishAnswer(EditAnswer editAnswer)
         {
             using var connection = GetConnection();
 
-            var answerInQueue = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = answer.Id });
+            var answerInQueue = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
             if (answerInQueue == null)
             {
-                return "Answer not found";
+                return new PublishedAnswer() { Error = "Answer not found" };
             }
 
-            int newAnswerId = await connection.ExecuteScalarAsync<int>(@"
+            var answer = new Answer()
+            {
+                Text = editAnswer.Text,
+                CreatedDate = editAnswer.CreatedDate,
+                PublishedDate = DateTimeOffset.Now
+            };
+
+            answer.Id = await connection.ExecuteScalarAsync<int>(@"
                 INSERT INTO Answers
                 (Text, CreatedDate, PublishedDate)
                 OUTPUT INSERTED.Id
-                VALUES (@Text, @CreatedDate, GETDATE())
+                VALUES (@Text, @CreatedDate, @PublishedDate)
             ", answer);
 
-            if (newAnswerId > 0)
+            if (answer.Id > 0)
             {
-                await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id = answer.Id });
+                await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
+                return new PublishedAnswer() { Answer = answer };
             }
 
-            return string.Empty;
+            return new PublishedAnswer() { Error = "Failed to insert answer" };
         }
 
         public async Task EditAnswerInQueue(EditAnswer answer)

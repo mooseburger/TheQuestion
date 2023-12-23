@@ -4,16 +4,19 @@ using TheQuestion.Data.Models;
 using TheQuestion.Models.Answer;
 using TheQuestion.Models.Generic;
 using TheQuestion.Repositories;
+using TheQuestion.Search;
 
 namespace TheQuestion.Controllers
 {
     public class AnswerController : Controller
     {
         private readonly IAnswerRepository _answerRepository;
-
-        public AnswerController(IAnswerRepository answerRepository)
+        private readonly ISearchService _searchService;
+        
+        public AnswerController(IAnswerRepository answerRepository, ISearchService searchService)
         {
             _answerRepository = answerRepository;
+            _searchService = searchService;
         }
 
         [HttpGet]
@@ -94,12 +97,17 @@ namespace TheQuestion.Controllers
 
             if (model.Publish)
             {
-                string error = await _answerRepository.PublishAnswer(model);
-                if (!string.IsNullOrWhiteSpace(error))
+                var publishedAnswer = await _answerRepository.PublishAnswer(model);
+                if (publishedAnswer.Answer != null)
+                {
+                    await _searchService.IndexAnswer(publishedAnswer.Answer);
+                }
+
+                else
                 {
                     var statuses = await _answerRepository.GetAnswerStatuses();
                     model.SetStatuses(statuses);
-                    model.Errors = new List<string> { error };
+                    model.Errors = new List<string> { publishedAnswer.Error! };
                     return View(model);
                 }
             }

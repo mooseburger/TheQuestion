@@ -1,7 +1,10 @@
+using Algolia.Search.Clients;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using TheQuestion.Data;
 using TheQuestion.Repositories;
+using TheQuestion.Search;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,16 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 
+// Search
+builder.Services.Configure<SearchConfiguration>(builder.Configuration.GetSection("Search"));
+builder.Services.AddSingleton<ISearchClient, SearchClient>(provider =>
+{
+    var config = provider.GetRequiredService<IOptions<SearchConfiguration>>().Value;
+    return new SearchClient(config.AppId, config.AdminApiKey);
+});
+
+builder.Services.AddScoped<ISearchService, SearchService>();
+
 builder.Services.ConfigureApplicationCookie(options => 
 {
     options.LoginPath = "/auth/login";
@@ -34,6 +47,8 @@ builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
 });
+
+
 
 var app = builder.Build();
 
