@@ -16,6 +16,6 @@ namespace TheQuestion.Data.Models
 
         [Required]
         [Column(Order = 3)]
-        public DateTime CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
     }
 }

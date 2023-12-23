@@ -9,6 +9,6 @@ namespace TheQuestion.Data.Models
     {
         [Required]
         [Column(Order = 4)]
-        public DateTime PublishedDate { get; set; }
+        public DateTimeOffset PublishedDate { get; set; }
     }
 }

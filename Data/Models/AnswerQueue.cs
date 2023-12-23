@@ -11,6 +11,6 @@ namespace TheQuestion.Data.Models
 
         [Required]
         [Column(Order = 10)]
-        public DateTime ModifiedDate { get; set; }
+        public DateTimeOffset ModifiedDate { get; set; }
     }
 }

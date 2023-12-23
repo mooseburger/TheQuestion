@@ -18,7 +18,7 @@ namespace TheQuestion.Models.Answer
 
         public bool Next { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
 
         public List<SelectListItem>? Statuses { get; set; } = null;
 
