@@ -26,6 +26,8 @@ namespace TheQuestion.Repositories
         Task<PaginatedResult<AnswerTable>> GetAnswerTablePage(SortDirection sortDirection, PaginatedRequest paginatedRequest);
 
         Task<ViewAnswer> GetAnswerView(int id);
+
+        Task<PaginatedResult<Answer>> GetAnswerPage(PaginatedRequest paginatedRequest);
     }
 
     public class AnswerRepository : BaseRepository, IAnswerRepository
@@ -236,6 +238,40 @@ namespace TheQuestion.Repositories
             var answer = await connection.QueryFirstAsync<ViewAnswer>("SELECT * FROM Answers WHERE Id = @id", new { id });
 
             return answer;
+        }
+
+        public async Task<PaginatedResult<Answer>> GetAnswerPage(PaginatedRequest paginatedRequest)
+        {
+            string mainSql = @"
+                SELECT *
+                FROM Answers
+            ";
+
+            string orderByClause = "ORDER BY Id DESC";
+
+            using var connection = GetConnection();
+
+            string pageSql = @$"
+                {mainSql}
+                {orderByClause}
+                OFFSET @offset ROWS 
+                FETCH NEXT @pageSize ROWS ONLY
+            ";
+
+            var page = await connection.QueryAsync<Answer>(pageSql, new
+            {
+                offset = paginatedRequest.Offset,
+                pageSize = paginatedRequest.PageSize
+            });
+
+            string totalResultsSql = $"SELECT COUNT(*) FROM Answers";
+            int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql);
+
+            return new PaginatedResult<Answer>
+            {
+                Page = page,
+                TotalRecords = totalResults
+            };
         }
     }
 }

@@ -7,6 +7,25 @@ namespace TheQuestion.Search
     public interface ISearchService
     {
         Task IndexAnswer(Answer answer);
+
+        Task BulkIndexAnswers(IEnumerable<Answer> answers);
+    }
+
+    public class AnswerIndexRecord
+    {
+        public AnswerIndexRecord(Answer answer)
+        {
+            Id = answer.Id;
+            Text = answer.Text;
+            CreatedDate = answer.CreatedDate;
+            PublishedDate = answer.PublishedDate;
+        }
+
+        public string ObjectID => Id.ToString();
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset PublishedDate { get; set; }
     }
 
     public class SearchService : ISearchService
@@ -22,13 +41,13 @@ namespace TheQuestion.Search
         public async Task IndexAnswer(Answer answer)
         {
             var index = _client.InitIndex(_configuration.IndexName);
-            var response = await index.SaveObjectAsync(new { 
-                ObjectID = answer.Id.ToString(),
-                Id = answer.Id,
-                Text = answer.Text,
-                CreatedDate = answer.CreatedDate,
-                PublishedDate = answer.PublishedDate
-            });
+            var response = await index.SaveObjectAsync(new AnswerIndexRecord(answer));
+        }
+
+        public async Task BulkIndexAnswers(IEnumerable<Answer> answers)
+        {
+            var index = _client.InitIndex(_configuration.IndexName);
+            var response = await index.SaveObjectsAsync(answers.Select(a => new AnswerIndexRecord(a)));
         }
     }
 }

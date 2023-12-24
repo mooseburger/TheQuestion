@@ -176,5 +176,23 @@ namespace TheQuestion.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> BulkReindex()
+        {
+            int pageSize = 100;
+            var page = await _answerRepository.GetAnswerPage(new PaginatedRequest() { PageNumber = 1, PageSize = pageSize });
+            int totalPages = (int)Math.Ceiling((decimal)page.TotalRecords / pageSize);
+            await _searchService.BulkIndexAnswers(page.Page); // Index first page
+
+            for (int p = 2; p <= totalPages; p++)
+            {
+                page = await _answerRepository.GetAnswerPage(new PaginatedRequest() { PageNumber = p, PageSize = pageSize });
+                await _searchService.BulkIndexAnswers(page.Page);
+            }
+
+            return Redirect("/answer/table");
+        }
     }
 }
