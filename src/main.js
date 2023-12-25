@@ -5,6 +5,7 @@ import './assets/line-right.svg';
 import UserList from './components/UserList.vue';
 import AnswerDashboard from './components/AnswerDashboard.vue';
 import AnswerTable from './components/AnswerTable.vue';
+import AnswerSearch from './components/AnswerSearch.vue';
 
 import { createApp } from 'vue'
 
@@ -26,4 +27,16 @@ const answerTableContainer = document.getElementById("answer-table");
 if (answerTableContainer) {
     const app = createApp(AnswerTable);
     app.mount(answerTableContainer);
+}
+
+const answerSearchContainer = document.getElementById("answer-search");
+if (answerSearchContainer) {
+    const app = createApp(AnswerSearch);
+    app.config.globalProperties.algolia = {
+        index: answerSearchContainer.dataset.index,
+        appId: answerSearchContainer.dataset.appid,
+        apiKey: answerSearchContainer.dataset.apikey
+    };
+
+    app.mount(answerSearchContainer);
 }
