@@ -16,8 +16,16 @@
         color: white;
     }
 
-    .btn-answer {
+    .btn-question {
         background-color: $boringAccent;
         color: white;
+    }
+
+    .answer {
+        background-color: $boringAnswerBg;
+
+        .answer-title {
+            color: $boringAnswerTitle;
+        }
     }
 }
