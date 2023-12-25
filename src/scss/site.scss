@@ -50,6 +50,20 @@ body {
     padding: 11px 40px;
 }
 
+.answer-search-controls {
+    .search-glass {
+        left: 0.8rem;
+    }
+    .search-reset {
+        right: 0.8rem;
+    }
+    .search-control {
+        padding-left: 2.2rem;
+        border-radius: 18px;
+    }
+}
+
+
 .answer {
     padding: 33px 82px 50px 67px;
     border-radius: 21px;
