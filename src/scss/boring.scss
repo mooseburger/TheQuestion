@@ -19,6 +19,13 @@
     .btn-question {
         background-color: $boringAccent;
         color: white;
+
+        &.outline {
+            background-color: white;
+            color: $boringAnswerText;
+            border-color: $boringAccent;
+            font-weight: normal;
+        }
     }
 
     .answer {

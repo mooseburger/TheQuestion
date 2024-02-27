@@ -23,6 +23,14 @@
                 ]
             };
         },
+        methods: {
+            toTop: function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            }
+        }
     };
 </script>
 
@@ -55,9 +63,12 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="!isLastPage" class="row justify-content-center">
-                    <div class="col-md-6 text-center">
+                <div class="row">
+                    <div v-if="!isLastPage" class="col-md-6 text-end">
                         <button class="btn btn-question" @click="refineNext">Load More</button>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-question outline" @click="toTop">Back To Top</button>
                     </div>
                 </div>
             </template>
