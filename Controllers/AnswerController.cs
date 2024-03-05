@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheQuestion.CAPTCHA;
 using TheQuestion.Data.Models;
 using TheQuestion.Models.Answer;
 using TheQuestion.Models.Generic;
@@ -12,11 +13,13 @@ namespace TheQuestion.Controllers
     {
         private readonly IAnswerRepository _answerRepository;
         private readonly ISearchService _searchService;
+        private readonly ICaptchaService _captchaService;
         
-        public AnswerController(IAnswerRepository answerRepository, ISearchService searchService)
+        public AnswerController(IAnswerRepository answerRepository, ISearchService searchService, ICaptchaService captchaService)
         {
             _answerRepository = answerRepository;
             _searchService = searchService;
+            _captchaService = captchaService;
         }
 
         [HttpGet]
@@ -193,6 +196,26 @@ namespace TheQuestion.Controllers
             }
 
             return Redirect("/answer/table");
+        }
+
+        [HttpGet]
+        public IActionResult Submit()
+        {
+            return View(new SubmitAnswer());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Submit(SubmitAnswer model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            //await _answerRepository.CreateAnswer(model);
+            await _captchaService.CaptchaPassed(model.CaptchaToken);
+            return Redirect("/thanks");
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿@using TheQuestion.CAPTCHA
+@using TheQuestion.Models.Answer;
+@using Microsoft.Extensions.Options;
+
+@inject IOptions<CaptchaConfiguration> Options;
+
+@model SubmitAnswer
+
+<script>
+    function onSubmit(token) {
+        document.getElementById('captchaToken').value = token;
+        document.getElementById("submitForm").submit();
+    }
+</script>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form id="submitForm" asp-controller="Answer" asp-action="Submit" method="post" class="mb-3">
+                    <div class="mb-3">
+                        <label asp-for="Text" class="form-label"></label>
+                        <textarea class="form-control" asp-for="Text" rows="25"></textarea>
+                        <span class="text-danger" asp-validation-for="Text"></span>
+                    </div>
+                    <input id="captchaToken" type="hidden" asp-for="CaptchaToken" />
+                    <button class="g-recaptcha"
+                            data-sitekey="@Options.Value.SiteKey"
+                            data-callback='onSubmit'
+                            data-action='submit'>
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+        @if (Model.Errors?.Any() == true)
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    @foreach (var error in Model.Errors)
+                    {
+                        <p class="text-danger mb-3">@error</p>
+                    }
+                </div>
+            </div>
+        }
+    </main>
+</div>

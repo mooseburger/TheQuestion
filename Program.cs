@@ -2,6 +2,7 @@ using Algolia.Search.Clients;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using TheQuestion.CAPTCHA;
 using TheQuestion.Data;
 using TheQuestion.Repositories;
 using TheQuestion.Search;
@@ -21,6 +22,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+
+// CAPTCHA
+builder.Services.Configure<CaptchaConfiguration>(builder.Configuration.GetSection("CAPTCHA"));
+builder.Services.AddScoped<ICaptchaService, CaptchaService>();
 
 // Search
 builder.Services.Configure<SearchConfiguration>(builder.Configuration.GetSection("Search"));
