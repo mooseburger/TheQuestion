@@ -3,8 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TheQuestion.Models.Answer
 {
-    public class SubmitAnswer : CreateAnswer
+    public class SubmitAnswer
     {
+        [Required]
+        [MaxLength(2000)]
+        [DisplayName("Answer")]
+        public string Answer { get; set; } = string.Empty;
+
         [Required]
         [DisplayName("CAPTCHA")]
         public string CaptchaToken { get; set; } = string.Empty;

@@ -65,7 +65,7 @@ namespace TheQuestion.Controllers
                 return View(model);
             }
 
-            int id = await _answerRepository.CreateAnswer(model);
+            int id = await _answerRepository.CreateAnswer(model.Text);
             return Redirect($"edit/{id}");
         }
 
@@ -213,8 +213,15 @@ namespace TheQuestion.Controllers
                 return View(model);
             }
 
-            //await _answerRepository.CreateAnswer(model);
-            await _captchaService.CaptchaPassed(model.CaptchaToken);
+            bool captchaPassed = await _captchaService.CaptchaPassed(model.CaptchaToken);
+            if (!captchaPassed)
+            {
+                model.Errors = new List<string> { "CAPTCHA validation failed. Are you a robot?" };
+                return View(model);
+            }
+
+            await _answerRepository.CreateAnswer(model.Answer);
+            
             return Redirect("/thanks");
         }
     }

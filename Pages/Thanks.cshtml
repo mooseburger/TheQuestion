@@ -1,20 +1,16 @@
 ﻿@page
+@using TheQuestion.Models.Pages
 @model TheQuestion.Pages.ThanksModel
 @{
 }
 
-<div class="container main">
-    <div class="row my-4">
-        <div class="col-md-8">
-            <h2>Thank You For Answering!</h2>
-        </div>
-    </div>
-
-    <div class="row mb-4">
+<div class="container main py-3">
+    @await Html.PartialAsync("_PageHeading", new PageHeading() { Title = "Thank You!" })
+    <div class="row justify-content-center my-4">
         <div class="col-md-10">
-            <h4>
+            <p class="blurb">
                 Answers are published on an ongoing basis, but you can count on all of the answers for a given week to be processed by Sunday EOD at the latest.
-            </h4>
+            </p>
         </div>
     </div>
 </div>

@@ -11,7 +11,7 @@ namespace TheQuestion.Repositories
 
         Task<IEnumerable<AnswerStatusDto>> GetAnswerStatuses();
         
-        Task<int> CreateAnswer(CreateAnswer answer);
+        Task<int> CreateAnswer(string answerText);
 
         Task<EditAnswer?> GetFromQueueById(int id);
 
@@ -91,12 +91,12 @@ namespace TheQuestion.Repositories
             return statuses;
         }
 
-        public async Task<int> CreateAnswer(CreateAnswer model)
+        public async Task<int> CreateAnswer(string answerText)
         {
-            var answer = new Data.Models.AnswerQueue()
+            var answer = new AnswerQueue()
             {
                 AnswerStatusId = (int)AnswerStatusEnum.InReview,
-                Text = model.Text
+                Text = answerText
             };
 
             using var connection = GetConnection();
