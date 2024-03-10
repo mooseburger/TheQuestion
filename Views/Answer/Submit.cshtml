@@ -34,6 +34,11 @@
                 <div class="col-md-12">
                     <div class="mb-3">
                         <textarea id="answer" class="form-control answer-submit" asp-for="Answer" rows="10" placeholder="Blow us all away..."></textarea>
+                        <p class="mt-2">
+                            This site is protected by reCAPTCHA and the Google
+                            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+                        </p>
                         <span class="text-danger" asp-validation-for="Answer"></span>
                     </div>
                     <input id="captchaToken" type="hidden" asp-for="CaptchaToken" />
