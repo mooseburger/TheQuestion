@@ -5,7 +5,7 @@ namespace TheQuestion.Models.Answer
 {
     public class SubmitAnswer
     {
-        [Required]
+        [Required(ErrorMessage = "Please submit an answer...")]
         [MaxLength(2000)]
         [DisplayName("Answer")]
         public string Answer { get; set; } = string.Empty;
