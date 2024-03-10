@@ -6,7 +6,7 @@ namespace TheQuestion.Models.Answer
     public class SubmitAnswer
     {
         [Required(ErrorMessage = "Please submit an answer...")]
-        [MaxLength(2000)]
+        [MaxLength(2000, ErrorMessage = "Answers are 2000 characters maximum.")]
         [DisplayName("Answer")]
         public string Answer { get; set; } = string.Empty;
 
