@@ -6,8 +6,9 @@ import UserList from './components/UserList.vue';
 import AnswerDashboard from './components/AnswerDashboard.vue';
 import AnswerTable from './components/AnswerTable.vue';
 import AnswerSearch from './components/AnswerSearch.vue';
+import StyleToggler from './components/StyleToggler.vue';
 
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 
 const userListContainer = document.getElementById("user-list");
 if (userListContainer) {
@@ -39,4 +40,10 @@ if (answerSearchContainer) {
     };
 
     app.mount(answerSearchContainer);
+}
+
+const styleTogglerContainer = document.getElementById("style-toggler");
+if (styleTogglerContainer) {
+    const app = createApp(StyleToggler);
+    app.mount(styleTogglerContainer);
 }
