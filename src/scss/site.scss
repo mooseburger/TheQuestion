@@ -6,6 +6,15 @@ body {
 }
 
 .navbar {
+    .navbar-brand {
+        --bs-navbar-brand-color: white;
+        --bs-navbar-brand-hover-color: white;
+
+        .logo {
+            content: url(/images/logo.svg);
+        }
+    }
+
     > .container {
         display: block;
     }

@@ -1,5 +1,5 @@
 import './scss/site.scss';
-import './assets/boring-logo.svg';
+import './assets/logo.svg';
 import './assets/line-left.svg';
 import './assets/line-right.svg';
 import UserList from './components/UserList.vue';
