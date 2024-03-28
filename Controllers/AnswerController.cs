@@ -23,6 +23,14 @@ namespace TheQuestion.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Index(int id)
+        {
+            var answer = await _answerRepository.GetPublicAnswer(id);
+
+            return View(answer);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Admin,Reviewer")]
         public IActionResult Dashboard()
         {

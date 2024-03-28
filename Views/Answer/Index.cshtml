@@ -1,0 +1,16 @@
+﻿@using TheQuestion.Models.Answer;
+@model PublicAnswer
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="mb-3">#@Model.Id</h1>
+                <p>@Model.Text</p>
+                <p>Created: @Model.CreatedDate.ToString("R")</p>
+                <p>Published: @Model.PublishedDate.ToString("R")</p>
+                <a class="btn btn-primary" href="/answer/table">Back</a>
+            </div>
+        </div>
+    </main>
+</div>

@@ -7,6 +7,8 @@ namespace TheQuestion.Repositories
 {
     public interface IAnswerRepository
     {
+        Task<PublicAnswer> GetPublicAnswer(int id);
+
         Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest);
 
         Task<IEnumerable<AnswerStatusDto>> GetAnswerStatuses();
@@ -33,6 +35,17 @@ namespace TheQuestion.Repositories
     public class AnswerRepository : BaseRepository, IAnswerRepository
     {
         public AnswerRepository(IConfiguration configuration) : base(configuration) { }
+
+        public async Task<PublicAnswer> GetPublicAnswer(int id)
+        {
+            string sql = "SELECT *, (SELECT MAX(Id) FROM Answers) AS LastId FROM Answers WHERE Id = @id";
+
+            using var connection = GetConnection();
+
+            var answer = await connection.QueryFirstOrDefaultAsync<PublicAnswer>(sql, new { id });
+
+            return answer;
+        }
 
         public async Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
