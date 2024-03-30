@@ -89,13 +89,20 @@ body {
 
         a {
             color: inherit;
-            text-decoration: none;
         }
     }
 
     .answer-text {
         font-size: 22px;
         line-height: 1.45;
+    }
+
+    &.carousel {
+        padding-left: 82px;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        width: 8%;
     }
 }
 
