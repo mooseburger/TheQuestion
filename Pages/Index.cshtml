@@ -37,7 +37,9 @@
         </div>
     </div>
 
-    <div class="row">
+    @await Html.PartialAsync("_PageHeading", new PageHeading() { Title = "The Answers" })
+
+    <div class="row mt-5">
         <div class="col-12">
             <div id="answer-search" data-index="@searchConfig.IndexName" data-appId="@searchConfig.AppId" data-apiKey="@searchConfig.SearchApiKey"></div>
         </div>
