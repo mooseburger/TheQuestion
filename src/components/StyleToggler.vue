@@ -18,11 +18,14 @@
         },
         methods: {
             setStyle(newStyle, storeStyle = true) {
-                document.body.classList.remove(styles.boring.id);
-                document.body.classList.remove(styles.vajra.id);
-                document.body.classList.remove(styles.gnosis.id);
+                document.body.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
 
                 document.body.classList.add(newStyle);
+
+                // Trigger a reflow (thanks ChatGPT!)
+                void document.body.offsetWidth;
+
+                document.body.classList.add('fade-in');
 
                 this.style = {
                     id: newStyle,
@@ -56,8 +59,6 @@
             } else {
                 const style = localStorage.getItem(styleStorageName);
                 this.setStyle(style);
-                // Refresh the cookie
-                cookieService.setCookie(styleStorageName, style, 365);
             }
         }
     }
