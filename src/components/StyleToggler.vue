@@ -38,7 +38,7 @@
                 }
             },
             async initializationCycle() {
-                const cycleWaitMillis = 1500;
+                const cycleWaitMillis = 2000;
 
                 await new Promise(r => setTimeout(r, cycleWaitMillis));
 
