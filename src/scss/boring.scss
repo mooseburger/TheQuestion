@@ -8,6 +8,22 @@
         color: white;
     }
 
+    .page-heading-title {
+        color: $boringAnswerTitle;
+    }
+    
+    .blurb {
+        color: $boringAnswerText;
+    }
+
+    .the-question {
+        color: $boringAnswerTitle;
+    }
+
+    .btn-question-primary {
+        background-color: $boringAccent;
+    }
+
     .btn-question {
         background-color: $boringAccent;
         color: white;

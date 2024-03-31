@@ -1,0 +1,56 @@
+.vajra {
+    background-image: linear-gradient(159deg, #071d67 9%, #07112e 90%);
+
+    .nav-link {
+        --bs-nav-link-color: white;
+    }
+
+    .current-style {
+        color: white;
+    }
+
+    header {
+        background-image: linear-gradient(to bottom, rgba(17, 0, 80, 0.79), rgba(0, 0, 0, 0));
+    }
+
+    .page-heading-title {
+        color: $vajraAnswerTitle;
+    }
+
+    .blurb {
+        color: $vajraAnswerText;
+    }
+
+    .the-question {
+        color: $vajraAnswerTitle;
+    }
+
+    .btn-question-primary {
+        background-color: $vajraAccent;
+    }
+
+    .btn-question {
+        background-color: $vajraAccent;
+        color: white;
+
+        &.outline {
+            background-color: transparent;
+            color: $vajraAnswerText;
+            border-color: $vajraAccent;
+            font-weight: normal;
+        }
+    }
+
+    .answer {
+        background-color: $vajraAnswerBg;
+        opacity: 0.69;
+
+        .answer-title {
+            color: $vajraAnswerTitle;
+        }
+
+        .answer-text {
+            color: $vajraAnswerText;
+        }
+    }
+}

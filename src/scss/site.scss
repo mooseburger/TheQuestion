@@ -1,4 +1,5 @@
 @import 'boring.scss';
+@import 'vajra.scss';
 
 body {
     font-family: Tajawal;
@@ -27,7 +28,6 @@ body {
 .page-heading-title {
     font-size: 48px;
     font-weight: 500;
-    color: $font-primary;
     margin-bottom: 0;
 }
 
@@ -35,17 +35,20 @@ body {
     text-align: center;
     font-size: 90px;
     font-weight: 300;
-    color: $font-primary;
 }
 
 .blurb {
     font-size: 25px;
     text-align: center;
-    color: $heading-black;
+}
+
+#style-toggler-map {
+    area {
+        cursor: pointer;
+    }
 }
 
 .btn-question-primary {
-    background-color: $button-primary;
     border-radius: 70px;
     color: $white;
     font-size: 35px;
