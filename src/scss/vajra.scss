@@ -63,7 +63,6 @@
 
     .answer {
         background-color: $vajraAnswerBg;
-        opacity: 0.69;
 
         .answer-title {
             color: $vajraAnswerTitle;
@@ -72,5 +71,13 @@
         .answer-text {
             color: $vajraAnswerText;
         }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            filter: none;
+        }
+    }
+
+    footer {
+        color: white;
     }
 }
