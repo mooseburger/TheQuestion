@@ -3,6 +3,43 @@
     background-repeat: no-repeat;
     position: relative;
 
+    .gnosis-cloud {
+        display: block;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #cloud-5 {
+        top: -120px;
+        right: 220px;
+        opacity: 0.6;
+    }
+
+    #cloud-4_1 {
+        top: 150px;
+        left: 25px;
+        width: 40%;
+        opacity: 0.7;
+    }
+
+    #cloud-2 {
+        top: 350px;
+        right: 100px;
+        opacity: 0.7;
+    }
+
+    #cloud-1 {
+        top: 800px;
+        left: 500px;
+        width: 20%;
+        opacity: 0.7;
+    }
+
+    #cloud-4_2 {
+        top: 50%;
+        right: 0px;
+    }
+
     .nav-link {
         --bs-nav-link-color: white;
     }
