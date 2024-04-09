@@ -1,5 +1,45 @@
 .vajra {
     background-image: linear-gradient(159deg, #071d67 9%, #07112e 90%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /*background-position: 50% 30%, 50% 40%, 50% 70%, center;
+    background-size: 73%, 80%, 20%, 100%;*/
+
+    position: relative;
+
+    .vajra-pattern {
+        display: block;
+        position: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    #circle-pattern {
+        width: 110vw;
+        aspect-ratio: 1;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -3;
+    }
+
+    #six-sided-pattern {
+        width: 73vw;
+        aspect-ratio: 1373 / 1581;
+        top: -30%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -2;
+    }
+
+    #circle-triangle-pattern {
+        width: 21vw;
+        aspect-ratio: 1;
+        top: 32%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+    }
 
     .nav-link {
         --bs-nav-link-color: white;
