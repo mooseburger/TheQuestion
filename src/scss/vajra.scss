@@ -1,15 +1,20 @@
 .vajra {
-    background-image: linear-gradient(159deg, #071d67 9%, #07112e 90%);
+    background-image: url(../assets/star.png), url(../assets/star.png), url(../assets/star.png),
+        url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png),
+        url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), linear-gradient(159deg, #071d67 9%, #07112e 90%);
     background-repeat: no-repeat;
     background-attachment: fixed;
-
+    background-position: 20% 20%, 40% 10%, 70% 25%,
+        5% 40%, 15% 50%, 30% 35%, 65% 62%, 80% 40%,
+        8% 85%, 15% 80%, 68% 82%, 75% 82%, top;
+    background-size: 13.5px 13.5px, 13.5px 13.5px, 23.5px 23.5px,
+        13.5px 13.5px, 23.5px 23.5px, 23.5px 23.5px, 13.5px 13.5px, 23.5px 23.5px,
+        13.5px 13.5px, 23.5px 23.5px, 13.5px 13.5px, 23.5px 23.5px, 100%;
     position: relative;
 
     .vajra-pattern {
         display: block;
         position: fixed;
-        background-repeat: no-repeat;
-        background-size: cover;
     }
 
     #circle-pattern {
