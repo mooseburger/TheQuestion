@@ -1,0 +1,74 @@
+.gnosis {
+    background-image: linear-gradient(to bottom, #94b8d4 10%, #edf4f7 52%, #f8eff4 95%);
+    background-repeat: no-repeat;
+    position: relative;
+
+    .nav-link {
+        --bs-nav-link-color: white;
+    }
+
+    .current-style {
+        color: white;
+    }
+
+    header {
+        background-image: linear-gradient(to bottom, #244466, rgba(51, 88, 127, 0) 100%);
+
+        .btn-question {
+            background-color: transparent;
+        }
+    }
+
+    .page-heading-title {
+        color: white;
+    }
+
+    .the-question {
+        color: $gnosisAnswerTitle;
+    }
+
+    .blurb {
+        color: $gnosisAnswerText;
+    }
+
+    .btn-question {
+        background-color: $gnosisPrimaryBtnBg;
+        color: white;
+        border-color: $gnosisAccent;
+        border-width: 3px;
+
+        &.outline {
+            background-color: transparent;
+            color: $gnosisAnswerText;
+        }
+    }
+
+    .btn-question-primary {
+        background-color: $gnosisPrimaryBtnBg;
+        border-color: $gnosisAccent;
+        border-width: 3px;
+    }
+
+    .answer-search-controls {
+        .search-control {
+            background-color: $gnosisAnswerBg;
+        }
+    }
+
+    .answer {
+        background-color: $gnosisAnswerBg;
+
+        .answer-title {
+            color: $gnosisAnswerTitle;
+        }
+
+        .answer-text {
+            color: $gnosisAnswerText;
+        }
+    }
+
+    footer {
+        border-top: none;
+        color: $gnosisAnswerTitle;
+    }
+}

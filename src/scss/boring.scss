@@ -8,6 +8,16 @@
         color: white;
     }
 
+    .page-heading-left {
+        height: 2px;
+        background-image: url(../assets/line-left-gray.png);
+    }
+
+    .page-heading-right {
+        height: 2px;
+        background-image: url(../assets/line-right-gray.png);
+    }
+
     .page-heading-title {
         color: $boringAnswerTitle;
     }
@@ -51,5 +61,9 @@
     .answer-submit {
         background-color: $boringAnswerBg;
         color: $boringAnswerText;
+    }
+
+    footer {
+        border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color)
     }
 }

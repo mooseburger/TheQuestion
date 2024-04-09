@@ -1,5 +1,6 @@
 @import 'boring.scss';
 @import 'vajra.scss';
+@import 'gnosis.scss';
 
 :root {
     --star-image: url(../assets/star.png);
@@ -48,6 +49,10 @@ body {
         }
     }
 
+    .navbar-nav {
+        --bs-nav-link-hover-color: white;
+    }
+
     > .container {
         display: block;
     }
@@ -55,6 +60,16 @@ body {
 
 .main {
     margin-bottom: 5rem;
+}
+
+.page-heading-left {
+    height: 2px;
+    background-image: url(../assets/line-left-white.png);
+}
+
+.page-heading-right {
+    height: 2px;
+    background-image: url(../assets/line-right-white.png);
 }
 
 .page-heading-title {
