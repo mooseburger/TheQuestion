@@ -1,7 +1,7 @@
 .vajra {
-    background-image: url(../assets/star.png), url(../assets/star.png), url(../assets/star.png),
-        url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png),
-        url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), url(../assets/star.png), linear-gradient(159deg, #071d67 9%, #07112e 90%);
+    background-image: var(--star-image), var(--star-image), var(--star-image),
+        var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image),
+        var(--star-image), var(--star-image), var(--star-image), var(--star-image), linear-gradient(159deg, #071d67 9%, #07112e 90%);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: 20% 20%, 40% 10%, 70% 25%,

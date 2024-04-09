@@ -1,6 +1,10 @@
 @import 'boring.scss';
 @import 'vajra.scss';
 
+:root {
+    --star-image: url(../assets/star.png);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
