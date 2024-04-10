@@ -65,13 +65,15 @@
 </script>
 
 <template>
-    <img v-if="style.id === styles.boring.id" class="toggler" :alt="styles.boring.name" src="../assets/toggle-blue-left.svg" usemap="#style-toggler-map" />
-    <img v-if="style.id === styles.vajra.id" class="toggler" :alt="styles.vajra.name" src="../assets/toggle-orange-center.svg" usemap="#style-toggler-map" />
-    <img v-if="style.id === styles.gnosis.id" class="toggler" :alt="styles.gnosis.name" src="../assets/toggle-blue-right.svg" usemap="#style-toggler-map" />
-    <span class="current-style">{{style.name}}</span>
-    <map id="style-toggler-map" name="style-toggler-map">
-        <area shape="circle" coords="10,8,12" alt="Boring" @click="setStyle(styles.boring.id)" />
-        <area shape="circle" coords="37,8,12" alt="Vajra" @click="setStyle(styles.vajra.id)" />
-        <area shape="circle" coords="70,8,12" alt="Gnosis" @click="setStyle(styles.gnosis.id)" />
-    </map>
+    <div class="toggler-wrapper">
+        <img v-if="style.id === styles.boring.id" class="toggler" :alt="styles.boring.name" src="../assets/toggle-blue-left.svg" usemap="#style-toggler-map" />
+        <img v-if="style.id === styles.vajra.id" class="toggler" :alt="styles.vajra.name" src="../assets/toggle-orange-center.svg" usemap="#style-toggler-map" />
+        <img v-if="style.id === styles.gnosis.id" class="toggler" :alt="styles.gnosis.name" src="../assets/toggle-blue-right.svg" usemap="#style-toggler-map" />
+        <span class="current-style">{{style.name}}</span>
+        <map id="style-toggler-map" name="style-toggler-map">
+            <area shape="circle" coords="10,8,12" alt="Boring" @click="setStyle(styles.boring.id)" />
+            <area shape="circle" coords="37,8,12" alt="Vajra" @click="setStyle(styles.vajra.id)" />
+            <area shape="circle" coords="70,8,12" alt="Gnosis" @click="setStyle(styles.gnosis.id)" />
+        </map>
+    </div>
 </template>

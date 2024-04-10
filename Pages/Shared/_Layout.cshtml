@@ -23,54 +23,48 @@
         <header class="mb-5">
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-4">
-                            <a class="navbar-brand" asp-area="" asp-page="/Index">
-                                <img class="logo d-inline-block" alt="Logo" width="40" height="40" />
-                                The Question
-                            </a>
-                        </div>
-                        <div class="col-lg-4 d-flex justify-content-center">
-                            <a class="btn btn-question" href="/answer/submit">Share With Everyone</a>
-                        </div>
-                        <div class="col-lg-3 d-flex">
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="navbar-collapse collapse d-sm-inline-flex">
-                                <ul class="navbar-nav flex-grow-1 justify-content-end">
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-page="/contact">Contact</a>
-                                    </li>
-                                    <li id="style-toggler" class="nav-item ms-3">
-                                    </li>
-                                    @if (Context.User.IsInRole("Admin") || Context.User.IsInRole("Reviewer"))
-                                    {
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/answer/dashboard">Review</a>
-                                        </li>
-                                    }
-                                    @if (Context.User.Identity?.IsAuthenticated == true)
-                                    {
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                                Hello, @Context.User.Identity.Name!
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="/answer/table">Answers</a></li>
-                                                @if (Context.User.IsInRole("Admin"))
-                                                {
-                                                    <li><a class="dropdown-item" href="/user">Users</a></li>
-                                                }
-                                                <li><a class="dropdown-item" href="/auth/changePassword">Change Password</a></li>
-                                                <li><a class="dropdown-item" href="/auth/logout">Logout</a>
-                                            </ul>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
+                    <a class="navbar-brand d-none d-md-block" asp-area="" asp-page="/Index">
+                        <img class="logo d-inline-block" alt="Logo" width="40" height="40" />
+                        The Question
+                    </a>
+
+                    <a class="btn btn-question" href="/answer/submit">Share With Everyone</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-grow-0">
+                        <ul class="navbar-nav flex-grow-1 justify-content-end">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/contact">Contact</a>
+                            </li>
+                            <li id="style-toggler" class="nav-item ms-md-3">
+                            </li>
+                            @if (Context.User.IsInRole("Admin") || Context.User.IsInRole("Reviewer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/answer/dashboard">Review</a>
+                                </li>
+                            }
+                            @if (Context.User.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                        Hello, @Context.User.Identity.Name!
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/answer/table">Answers</a></li>
+                                        @if (Context.User.IsInRole("Admin"))
+                                        {
+                                            <li><a class="dropdown-item" href="/user">Users</a></li>
+                                        }
+                                        <li><a class="dropdown-item" href="/auth/changePassword">Change Password</a></li>
+                                        <li><a class="dropdown-item" href="/auth/logout">Logout</a>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
             </nav>
