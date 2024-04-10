@@ -1,6 +1,14 @@
 .gnosis {
-    background-image: linear-gradient(to bottom, #94b8d4 10%, #edf4f7 52%, #f8eff4 95%);
+    background-image: var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image),
+        var(--star-image), var(--star-image), var(--star-image), var(--star-image),
+        var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image),
+        linear-gradient(to bottom, #94b8d4 10%, #edf4f7 52%, #f8eff4 95%);
     background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: 20% 50px, 30% 170px, 35% 150px, 54% 110px, 62% 80px, 75% 60px, 82% 120px,
+        26% 350px, 32% 440px, 66% 450px, 72% 340px,
+        29% 600px, 37% 780px, 45% 770px, 67% 790px, 77% 750px,
+        0%;
     position: relative;
 
     .gnosis-cloud {
