@@ -95,20 +95,34 @@ body {
 }
 
 .page-heading-title {
-    font-size: 48px;
+    font-size: 20px;
     font-weight: 500;
     margin-bottom: 0;
+
+    @media (min-width: $md-breakpoint) {
+        font-size: 48px;
+    }
 }
 
 .the-question {
     text-align: center;
-    font-size: 90px;
+    font-size: 36px;
     font-weight: 300;
+    margin-top: 0.75rem;
+
+    @media (min-width: $md-breakpoint) {
+        font-size: 90px;
+        margin-top: 0;
+    }
 }
 
 .blurb {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
+
+    @media (min-width: $md-breakpoint) {
+        font-size: 25px;
+    }
 }
 
 #style-toggler-map {
@@ -120,9 +134,13 @@ body {
 .btn-question-primary {
     border-radius: 70px;
     color: $white;
-    font-size: 35px;
+    font-size: 20px;
     font-weight: bold;
     padding: 22px 40px;
+
+    @media (min-width: $md-breakpoint) {
+        font-size: 35px;
+    }
 }
 
 .btn-question {
@@ -156,9 +174,13 @@ body {
 }
 
 .answer {
-    padding: 33px 82px 50px 67px;
+    padding: 31px 19px 16px 20px;
     border-radius: 21px;
     border: none;
+
+    @media (min-width: $md-breakpoint) {
+        padding: 33px 82px 50px 67px;
+    }
 
     .answer-title {
         font-size: 38px;

@@ -41,7 +41,7 @@
             <div class="col-md-10">
                 <ais-search-box :class-names="{ 'ais-SearchBox-input': 'form-control search-control py-2', 'ais-SearchBox-submit': 'search-glass', 'ais-SearchBox-reset': 'search-reset' }" />
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mt-3 mt-md-0">
                 <ais-sort-by :items="sort" :class-names="{ 'ais-SortBy-select': 'form-select search-control px-3 py-2' }"></ais-sort-by>
             </div>
         </div>
@@ -64,10 +64,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div v-if="!isLastPage" class="col-md-6 text-end">
+                    <div v-if="!isLastPage" class="col-md-6 text-center text-md-end">
                         <button class="btn btn-question" @click="refineNext">Load More</button>
                     </div>
-                    <div class="col-md-6 text-end">
+                    <div class="col-md-6 mt-3 mt-md-0 text-center text-md-end">
                         <button class="btn btn-question outline" @click="toTop">Back To Top</button>
                     </div>
                 </div>
