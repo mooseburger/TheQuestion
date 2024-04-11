@@ -196,8 +196,10 @@ body {
         line-height: 1.45;
     }
 
-    &.carousel {
-        padding-left: 82px;
+    @media (min-width: $md-breakpoint) {
+        &.carousel {
+            padding-left: 82px;
+        }
     }
 
     .carousel-control-prev, .carousel-control-next {

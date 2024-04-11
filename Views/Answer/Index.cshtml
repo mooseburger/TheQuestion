@@ -4,7 +4,7 @@
 <div class="container">
     <main role="main" class="pb-3">
         <div class="row justify-content-center mb-4">
-            <div class="col-md-8">
+            <div class="col-md-12 col-lg-8">
                 <h1 class="the-question">What do you wish that everybody knew?</h1>
             </div>
         </div>
@@ -13,19 +13,36 @@
                 <div class="carousel answer" data-bs-theme="dark">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <h1 class="answer-title mb-4"><a href="/answer/@Model.Id">#@Model.Id</a></h1>
+                            <div class="d-flex justify-content-between">
+                                <h1 class="answer-title mb-4"><a href="/answer/@Model.Id">#@Model.Id</a></h1>
+                                <div class="d-flex d-md-none">
+                                    @if (!Model.IsFirst)
+                                    {
+                                        <a href="/answer/@Model.Previous">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        </a>
+                                    }
+                                    @if (!Model.IsLast)
+                                    {
+                                        <a href="/answer/@Model.Next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                            
                             <p class="answer-text">@Model.Text</p>
                         </div>
                     </div>
                     @if (!Model.IsFirst)
                     {
-                        <a class="carousel-control-prev" href="/answer/@Model.Previous">
+                        <a class="d-none d-md-flex carousel-control-prev" href="/answer/@Model.Previous">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         </a>
                     }
                     @if (!Model.IsLast)
                     {
-                        <a class="carousel-control-next" href="/answer/@Model.Next">
+                        <a class="d-none d-md-flex carousel-control-next" href="/answer/@Model.Next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         </a>
                     }
