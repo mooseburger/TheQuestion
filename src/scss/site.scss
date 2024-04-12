@@ -192,8 +192,12 @@ body {
     }
 
     .answer-text {
-        font-size: 22px;
+        font-size: 20px;
         line-height: 1.45;
+
+        @media (min-width: $md-breakpoint) {
+            font-size: 22px;
+        }
     }
 
     @media (min-width: $md-breakpoint) {
