@@ -18,9 +18,14 @@
     }
 
     #cloud-5 {
-        top: -120px;
-        right: 220px;
+        top: -100px;
+        right: -620px;
         opacity: 0.6;
+
+        @media (min-width: $md-breakpoint) {
+            top: -120px;
+            right: 220px;
+        }
     }
 
     #cloud-4_1 {
@@ -32,20 +37,33 @@
 
     #cloud-2 {
         top: 350px;
-        right: 100px;
+        right: -300px;
         opacity: 0.7;
+
+        @media (min-width: $md-breakpoint) {
+            right: 100px;
+        }
     }
 
     #cloud-1 {
         top: 800px;
-        left: 500px;
-        width: 20%;
+        left: 200px;
+        width: 60%;
         opacity: 0.7;
+
+        @media (min-width: $md-breakpoint) {
+            left: 500px;
+            width: 20%;
+        }
     }
 
     #cloud-4_2 {
         top: 50%;
-        right: 0px;
+        right: -180%;
+
+        @media (min-width: $md-breakpoint) {
+            right: 0px;
+        }
     }
 
     .nav-link {
