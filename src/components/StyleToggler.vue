@@ -19,8 +19,12 @@
         methods: {
             setStyle(newStyle, storeStyle = true) {
                 document.body.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
+                document.body.dataset.bsTheme = "";
 
                 document.body.classList.add(newStyle);
+                if (newStyle === 'vajra') {
+                    document.body.dataset.bsTheme = "dark";
+                }
 
                 // Trigger a reflow (thanks ChatGPT!)
                 void document.body.offsetWidth;
