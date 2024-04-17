@@ -1,16 +1,30 @@
 .vajra {
-    background-image: var(--star-image), var(--star-image), var(--star-image),
-        var(--star-image), var(--star-image), var(--star-image), var(--star-image), var(--star-image),
-        var(--star-image), var(--star-image), var(--star-image), var(--star-image), linear-gradient(159deg, #071d67 9%, #07112e 90%);
+    background-image: url(../assets/vajra-pattern.png), linear-gradient(159deg, #071d67 9%, #07112e 90%);
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: 20% 20%, 40% 10%, 70% 25%,
-        5% 40%, 15% 50%, 30% 35%, 65% 62%, 80% 40%,
-        8% 85%, 15% 80%, 68% 82%, 75% 82%, top;
-    background-size: 13.5px 13.5px, 13.5px 13.5px, 23.5px 23.5px,
-        13.5px 13.5px, 23.5px 23.5px, 23.5px 23.5px, 13.5px 13.5px, 23.5px 23.5px,
-        13.5px 13.5px, 23.5px 23.5px, 13.5px 13.5px, 23.5px 23.5px, 100%;
+    background-position: 50% -25%, top;
+    background-size: 240%, 100%;
     position: relative;
+
+    @media (min-width: $md-breakpoint) {
+        background-position: 50% -75%, top;
+        background-size: 140%, 100%;
+    }
+
+    @media (min-width: $lg-breakpoint) {
+        background-position: 50% 30%, top;
+        background-size: 140%, 100%;
+    }
+
+    @media (min-width: $xl-breakpoint) {
+        background-position: 50% 40%, top;
+        background-size: 80%, 100%;
+    }
+
+    @media (min-width: $xxl-breakpoint) {
+        background-position: 50% 60%, top;
+        background-size: 80%, 100%;
+    }
 
     .vajra-pattern {
         display: block;

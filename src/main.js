@@ -1,8 +1,5 @@
 import './scss/site.scss';
 import './assets/logo.svg';
-import './assets/circle-triangle-pattern.png';
-import './assets/circle-pattern.png';
-import './assets/six-sided-pattern.png';
 import './assets/cloud.png';
 import './assets/cloud-5.png';
 import './assets/cloud-4.png';
