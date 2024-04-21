@@ -26,6 +26,13 @@
             async copy() {
                 const textWithLink = `${this.text}\n\n${window.location.origin}/answer/${this.id}`;
                 await navigator.clipboard.writeText(textWithLink);
+
+                const copiedToast = document.getElementById('copiedToast')
+
+                if (copiedToast) {
+                    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(copiedToast)
+                    toastBootstrap.show();
+                }
             }
         }
     }
@@ -47,7 +54,7 @@
     </button>
     <div class="row mt-3" v-if="showShareOptions">
         <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-between">
-            <a class="share-option copy-button" @click="copy()">
+            <a class="share-option copy-button" @click="copy">
                 <i class="bi bi-copy"></i>
             </a>
             <a class="share-option twitter-share-button"
