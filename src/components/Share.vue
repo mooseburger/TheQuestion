@@ -23,9 +23,9 @@
             getWhatsAppMessage() {
                 return encodeURIComponent(`${this.text}\n\n${window.location.origin}/answer/${this.id}`);
             },
-            copyLink() {
-
-
+            async copy() {
+                const textWithLink = `${this.text}\n\n${window.location.origin}/answer/${this.id}`;
+                await navigator.clipboard.writeText(textWithLink);
             }
         }
     }
@@ -47,8 +47,8 @@
     </button>
     <div class="row mt-3" v-if="showShareOptions">
         <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-between">
-            <a class="share-option copy-link-button" @click="copyLink()">
-                <i class="bi bi-link-45deg"></i>
+            <a class="share-option copy-button" @click="copy()">
+                <i class="bi bi-copy"></i>
             </a>
             <a class="share-option twitter-share-button"
                target="_blank"
