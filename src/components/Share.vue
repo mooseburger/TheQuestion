@@ -1,5 +1,4 @@
 <script>
-    import { nextTick } from 'vue';
     export default {
         props: {
             id: Number,
@@ -13,33 +12,20 @@
         methods: {
             async shareClick() {
                 this.showShareOptions = true;
-
-                await nextTick();
-
-                window.twttr = (function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0],
-                        t = window.twttr || {};
-                    if (d.getElementById(id)) return t;
-                    js = d.createElement(s);
-                    js.async = false;
-                    js.id = id;
-                    js.src = "https://platform.twitter.com/widgets.js";
-                    fjs.parentNode.insertBefore(js, fjs);
-
-                    t._e = [];
-                    t.ready = function (f) {
-                        t._e.push(f);
-                    };
-
-                    return t;
-                }(document, "script", "twitter-wjs"));
-
-                if (window.twttr.widgets) {
-                    window.twttr.widgets.load();
+            },
+            getTwitterMessage() {
+                let tweet = this.text.substring(0, 231);
+                if (this.text.length > 230) {
+                    tweet += '...';
                 }
+                return encodeURIComponent(`${tweet}\n\n${window.location.origin}/answer/${this.id}`);
             },
             getWhatsAppMessage() {
                 return encodeURIComponent(`${this.text}\n\n${window.location.origin}/answer/${this.id}`);
+            },
+            copyLink() {
+
+
             }
         }
     }
@@ -59,20 +45,18 @@
             </g>
         </svg>
     </button>
-    <div class="row" v-if="showShareOptions">
-        <div class="col-4 col-md-2">
-            <a class="twitter-share-button d-none"
-               data-via="Example"
-               data-size="medium"
-               data-text="Check this out!"
-               :data-url="`https://localhost:5175/answer/${id}`"
-               href="https://twitter.com/intent/tweet">
-                Tweet
+    <div class="row mt-3" v-if="showShareOptions">
+        <div class="col-12 col-md-4 col-lg-3 col-xl-2 d-flex justify-content-between">
+            <a class="share-option copy-link-button" @click="copyLink()">
+                <i class="bi bi-link-45deg"></i>
             </a>
-        </div>
-        <div class="col-4 col-md-2">
-            <a class="whatsapp-share-button" target="_blank" :href="`whatsapp://send?text=${getWhatsAppMessage(a)}`">
-                <img class="img-fluid" src="../assets/whatsapp.png" />
+            <a class="share-option twitter-share-button"
+               target="_blank"
+               :href="`https://twitter.com/intent/tweet?text=${getTwitterMessage()}`">
+                <i class="bi bi-twitter-x"></i>
+            </a>
+            <a class="share-option whatsapp-share-button" target="_blank" :href="`whatsapp://send?text=${getWhatsAppMessage(a)}`">
+                <i class="bi bi-whatsapp"></i>
             </a>
         </div>
     </div>
