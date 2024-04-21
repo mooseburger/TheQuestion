@@ -32,6 +32,8 @@
                             </div>
                             
                             <p class="answer-text">@Model.Text</p>
+
+                            <div id="answer-share" data-id="@Model.Id" data-text="@Model.Text"></div>
                         </div>
                     </div>
                     @if (!Model.IsFirst)

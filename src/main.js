@@ -9,8 +9,9 @@ import AnswerDashboard from './components/AnswerDashboard.vue';
 import AnswerTable from './components/AnswerTable.vue';
 import AnswerSearch from './components/AnswerSearch.vue';
 import StyleToggler from './components/StyleToggler.vue';
+import AnswerShare from './components/AnswerShare.vue';
 
-import { createApp } from 'vue';
+import { createApp, defineComponent, h } from 'vue';
 
 const userListContainer = document.getElementById("user-list");
 if (userListContainer) {
@@ -48,4 +49,21 @@ const styleTogglerContainer = document.getElementById("style-toggler");
 if (styleTogglerContainer) {
     const app = createApp(StyleToggler);
     app.mount(styleTogglerContainer);
+}
+
+const answerShareContainer = document.getElementById("answer-share");
+if (answerShareContainer) {
+    const props = {
+        id: answerShareContainer.dataset.id,
+        text: answerShareContainer.dataset.text
+    };
+
+    const AnswerShareApp = defineComponent({
+        render() {
+            return h(AnswerShare, { ...props });
+        }
+    });
+
+    const app = createApp(AnswerShareApp);
+    app.mount(answerShareContainer);
 }
