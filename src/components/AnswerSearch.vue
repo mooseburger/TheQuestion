@@ -68,7 +68,7 @@
                 </div>
                 <div class="row">
                     <div v-if="!isLastPage" class="col-md-6 text-center text-md-end">
-                        <button class="btn btn-question" @click="loadMore(refineNext)">Load More</button>
+                        <button class="btn btn-question" @click="refineNext">Load More</button>
                     </div>
                     <div class="col-md-6 mt-3 mt-md-0 text-center text-md-end">
                         <button class="btn btn-question outline" @click="toTop">Back To Top</button>
