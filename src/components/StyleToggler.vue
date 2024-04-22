@@ -9,6 +9,15 @@
         gnosis: { id: 'gnosis', name: 'Gnosis' }
     };
 
+    function vajraZoom() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        let zoomLevel = 100 + (scrollTop / 80); // Adjust the denominator to control the speed of zoom
+
+        if (zoomLevel > 205) zoomLevel = 205;
+
+        document.body.style.backgroundSize = `${zoomLevel}%, 100%`;
+    }
+
     export default {
         data() {
             return {
@@ -20,10 +29,14 @@
             setStyle(newStyle, storeStyle = true) {
                 document.body.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
                 document.body.dataset.bsTheme = "";
-
+                document.removeEventListener('scroll', vajraZoom);
+                document.body.style.backgroundSize = '';
                 document.body.classList.add(newStyle);
+
                 if (newStyle === 'vajra') {
                     document.body.dataset.bsTheme = "dark";
+
+                    document.addEventListener('scroll', vajraZoom);
                 }
 
                 // Trigger a reflow (thanks ChatGPT!)
