@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\jquery.validate.unobstrusive.js" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="public\favicon.svg" />
     <None Remove="src\assets\vajra-pattern.png" />
   </ItemGroup>
