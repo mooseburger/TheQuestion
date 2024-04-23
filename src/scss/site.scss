@@ -138,6 +138,10 @@ body {
     font-weight: bold;
     padding: 22px 40px;
 
+    &:hover {
+        color: $white;
+    }
+
     @media (min-width: $md-breakpoint) {
         font-size: 35px;
     }
