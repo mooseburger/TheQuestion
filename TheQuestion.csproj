@@ -12,10 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="public\favicon.svg" />
     <None Remove="src\assets\vajra-pattern.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="public\favicon.svg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="src\assets\vajra-pattern.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
