@@ -9,6 +9,7 @@ wwwroot/
 .config/
 PublishProfiles/
 ServiceDependencies/
+appSettings.*.json
 
 # Visual Studio Code
 .vscode/
