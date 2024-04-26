@@ -18,13 +18,12 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             string pageSql = @"
-                SELECT UserName AS Username, Email AS Email, r.Name AS RoleName
-                FROM AspNetUsers u
-                LEFT JOIN AspNetUserRoles ur ON ur.UserId = u.Id
-                INNER JOIN AspNetRoles r ON r.Id = ur.RoleId
-                ORDER BY NormalizedUserName
-                OFFSET @offset ROWS 
-                FETCH NEXT @pageSize ROWS ONLY
+                SELECT ""UserName"" AS Username, ""Email"" AS Email, r.""Name"" AS RoleName
+                FROM ""AspNetUsers"" u
+                LEFT JOIN ""AspNetUserRoles"" ur ON ur.""UserId"" = u.""Id""
+                INNER JOIN ""AspNetRoles"" r ON r.""Id"" = ur.""RoleId""
+                ORDER BY ""NormalizedUserName""
+                LIMIT @pageSize OFFSET @offset
             ";
 
             var page = await connection.QueryAsync<User>(pageSql, new { 
@@ -32,7 +31,7 @@ namespace TheQuestion.Repositories
                 pageSize = request.PageSize
             });
 
-            string totalResultsSql = "SELECT COUNT(*) FROM AspNetUsers";
+            string totalResultsSql = @"SELECT COUNT(*) FROM ""AspNetUsers""";
             int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql);
 
             return new PaginatedResult<User>

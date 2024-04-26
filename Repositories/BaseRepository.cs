@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Npgsql;
+using System.Data;
 
 namespace TheQuestion.Repositories
 {
@@ -10,9 +11,9 @@ namespace TheQuestion.Repositories
             _configuration = config;
         }
 
-        protected SqlConnection GetConnection()
+        protected IDbConnection GetConnection()
         {
-            return new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            return new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
     }
 }

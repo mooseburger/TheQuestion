@@ -29,7 +29,7 @@ namespace TheQuestion.Models.User
 
         public void SetRoles(List<IdentityRole> identityRoles)
         {
-            Roles = identityRoles.Select(r => new SelectListItem() { Value = r.Name, Text = r.NormalizedName }).ToList();
+            Roles = identityRoles.Select(r => new SelectListItem() { Value = r.Name, Text = r.Name }).ToList();
         }
     }
 }

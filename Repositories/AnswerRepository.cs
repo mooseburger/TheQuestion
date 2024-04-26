@@ -38,7 +38,7 @@ namespace TheQuestion.Repositories
 
         public async Task<PublicAnswer> GetPublicAnswer(int id)
         {
-            string sql = "SELECT *, (SELECT MAX(Id) FROM Answers) AS LastId FROM Answers WHERE Id = @id";
+            string sql = @"SELECT *, (SELECT MAX(""Id"") FROM ""Answers"") AS LastId FROM ""Answers"" WHERE ""Id"" = @id";
 
             using var connection = GetConnection();
 
@@ -50,18 +50,18 @@ namespace TheQuestion.Repositories
         public async Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
-                SELECT a.Id, SUBSTRING(a.Text, 1, 50) as Text, a.AnswerStatusId AS StatusId, ast.Name AS StatusName
-                FROM AnswerQueue a 
-                LEFT JOIN AnswerStatuses ast ON a.AnswerStatusId = ast.Id
+                SELECT a.""Id"", SUBSTRING(a.""Text"", 1, 50) as Text, a.""AnswerStatusId"" AS StatusId, ast.""Name"" AS StatusName
+                FROM ""AnswerQueue"" a 
+                LEFT JOIN ""AnswerStatuses"" ast ON a.""AnswerStatusId"" = ast.""Id""
             ";
 
             string whereClause = string.Empty;
             if (status.HasValue)
             {
-                whereClause = "WHERE a.AnswerStatusId = @status";
+                whereClause = @"WHERE a.""AnswerStatusId"" = @status";
             }
 
-            string orderByClause = $"ORDER BY a.Id {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
+            string orderByClause = @$"ORDER BY a.""Id"" {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
 
             using var connection = GetConnection();
 
@@ -69,8 +69,7 @@ namespace TheQuestion.Repositories
                 {mainSql}
                 {whereClause}
                 {orderByClause}
-                OFFSET @offset ROWS 
-                FETCH NEXT @pageSize ROWS ONLY
+                LIMIT @pageSize OFFSET @offset
             ";
 
             var page = await connection.QueryAsync<AnswerQueueTable>(pageSql, new
@@ -80,7 +79,7 @@ namespace TheQuestion.Repositories
                 pageSize = paginatedRequest.PageSize
             });
 
-            string totalResultsSql = $"SELECT COUNT(*) FROM AnswerQueue a {whereClause}";
+            string totalResultsSql = @$"SELECT COUNT(*) FROM ""AnswerQueue"" a {whereClause}";
             int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql, new { status });
 
             return new PaginatedResult<AnswerQueueTable>
@@ -93,8 +92,8 @@ namespace TheQuestion.Repositories
         public async Task<IEnumerable<AnswerStatusDto>> GetAnswerStatuses()
         {
             string sql = @"
-                SELECT Id, Name
-                FROM AnswerStatuses
+                SELECT ""Id"", ""Name""
+                FROM ""AnswerStatuses""
             ";
 
             using var connection = GetConnection();
@@ -115,10 +114,11 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             int id = await connection.ExecuteScalarAsync<int>(@"
-                INSERT INTO AnswerQueue
-                (AnswerStatusId, Text, CreatedDate, ModifiedDate)
-                OUTPUT INSERTED.Id
-                VALUES (@AnswerStatusId, @Text, GETDATE(), GETDATE());", answer);
+                INSERT INTO ""AnswerQueue""
+                (""AnswerStatusId"", ""Text"", ""CreatedDate"", ""ModifiedDate"")
+                VALUES (@AnswerStatusId, @Text, NOW(), NOW())
+                RETURNING ""Id""
+                ", answer);
 
             return id;
         }
@@ -127,7 +127,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var model = await connection.QueryFirstOrDefaultAsync<EditAnswer>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+            var model = await connection.QueryFirstOrDefaultAsync<EditAnswer>($@"SELECT * FROM ""AnswerQueue"" WHERE ""Id"" = @id", new { id });
 
             return model;
         }
@@ -136,7 +136,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var answerInQueue = await connection.QueryFirstOrDefaultAsync<Data.Models.AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
+            var answerInQueue = await connection.QueryFirstOrDefaultAsync<AnswerQueue>($@"SELECT * FROM ""AnswerQueue"" WHERE ""Id"" = @id", new { id = editAnswer.Id });
             if (answerInQueue == null)
             {
                 return new PublishedAnswer() { Error = "Answer not found" };
@@ -146,19 +146,19 @@ namespace TheQuestion.Repositories
             {
                 Text = editAnswer.Text,
                 CreatedDate = editAnswer.CreatedDate,
-                PublishedDate = DateTimeOffset.Now
+                PublishedDate = DateTimeOffset.UtcNow
             };
 
             answer.Id = await connection.ExecuteScalarAsync<int>(@"
-                INSERT INTO Answers
-                (Text, CreatedDate, PublishedDate)
-                OUTPUT INSERTED.Id
+                INSERT INTO ""Answers""
+                (""Text"", ""CreatedDate"", ""PublishedDate"")
                 VALUES (@Text, @CreatedDate, @PublishedDate)
+                RETURNING ""Id""
             ", answer);
 
             if (answer.Id > 0)
             {
-                await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id = editAnswer.Id });
+                await connection.ExecuteAsync(@"DELETE FROM ""AnswerQueue"" WHERE ""Id"" = @id", new { id = editAnswer.Id });
                 return new PublishedAnswer() { Answer = answer };
             }
 
@@ -170,9 +170,9 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             await connection.ExecuteAsync(@"
-                UPDATE AnswerQueue
-                SET Text = @Text, AnswerStatusId = @AnswerStatusId, ModifiedDate = GETDATE()
-                WHERE Id = @Id
+                UPDATE ""AnswerQueue""
+                SET ""Text"" = @Text, ""AnswerStatusId"" = @AnswerStatusId, ""ModifiedDate"" = NOW()
+                WHERE ""Id"" = @Id
             ", answer);
         }
 
@@ -180,7 +180,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var answer = await connection.QueryFirstOrDefaultAsync<Data.Models.AnswerQueue>($"SELECT * FROM AnswerQueue WHERE Id = @id", new { id });
+            var answer = await connection.QueryFirstOrDefaultAsync<AnswerQueue>(@$"SELECT * FROM ""AnswerQueue"" WHERE ""Id"" = @id", new { id });
             if (answer == null)
             {
                 return "Answer not found";
@@ -191,7 +191,7 @@ namespace TheQuestion.Repositories
                 return "Only rejected answers can be deleted";
             }
 
-            await connection.ExecuteAsync(@"DELETE FROM AnswerQueue WHERE Id = @id", new { id });
+            await connection.ExecuteAsync(@"DELETE FROM ""AnswerQueue"" WHERE ""Id"" = @id", new { id });
 
             return string.Empty;
         }
@@ -201,10 +201,10 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             int nextId = await connection.ExecuteScalarAsync<int>(@"
-                SELECT TOP 1 Id
-                FROM AnswerQueue
-                WHERE Id > @sourceId AND AnswerStatusId = @inReviewId
-                ORDER BY Id ASC
+                SELECT TOP 1 ""Id""
+                FROM ""AnswerQueue""
+                WHERE ""Id"" > @sourceId AND ""AnswerStatusId"" = @inReviewId
+                ORDER BY ""Id"" ASC
             ", new { sourceId = id, inReviewId = AnswerStatusEnum.InReview });
 
             return nextId;
@@ -213,19 +213,18 @@ namespace TheQuestion.Repositories
         public async Task<PaginatedResult<AnswerTable>> GetAnswerTablePage(SortDirection sortDirection, PaginatedRequest paginatedRequest)
         {
             string mainSql = @"
-                SELECT Id, SUBSTRING(Text, 1, 50) as Text
-                FROM Answers
+                SELECT ""Id"", SUBSTRING(""Text"", 1, 50) as Text
+                FROM ""Answers""
             ";
 
-            string orderByClause = $"ORDER BY Id {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
+            string orderByClause = $@"ORDER BY ""Id"" {(sortDirection == SortDirection.Descending ? "DESC" : "ASC")}";
 
             using var connection = GetConnection();
 
             string pageSql = @$"
                 {mainSql}
                 {orderByClause}
-                OFFSET @offset ROWS 
-                FETCH NEXT @pageSize ROWS ONLY
+                LIMIT @pageSize OFFSET @offset
             ";
 
             var page = await connection.QueryAsync<AnswerTable>(pageSql, new
@@ -234,7 +233,7 @@ namespace TheQuestion.Repositories
                 pageSize = paginatedRequest.PageSize
             });
 
-            string totalResultsSql = $"SELECT COUNT(*) FROM Answers";
+            string totalResultsSql = @$"SELECT COUNT(*) FROM ""Answers""";
             int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql);
 
             return new PaginatedResult<AnswerTable>
@@ -248,7 +247,7 @@ namespace TheQuestion.Repositories
         {
             using var connection = GetConnection();
 
-            var answer = await connection.QueryFirstAsync<ViewAnswer>("SELECT * FROM Answers WHERE Id = @id", new { id });
+            var answer = await connection.QueryFirstAsync<ViewAnswer>(@"SELECT * FROM ""Answers"" WHERE ""Id"" = @id", new { id });
 
             return answer;
         }
@@ -257,18 +256,17 @@ namespace TheQuestion.Repositories
         {
             string mainSql = @"
                 SELECT *
-                FROM Answers
+                FROM ""Answers""
             ";
 
-            string orderByClause = "ORDER BY Id DESC";
+            string orderByClause = @"ORDER BY ""Id"" DESC";
 
             using var connection = GetConnection();
 
             string pageSql = @$"
                 {mainSql}
                 {orderByClause}
-                OFFSET @offset ROWS 
-                FETCH NEXT @pageSize ROWS ONLY
+                LIMIT @pageSize OFFSET @offset
             ";
 
             var page = await connection.QueryAsync<Answer>(pageSql, new
@@ -277,7 +275,7 @@ namespace TheQuestion.Repositories
                 pageSize = paginatedRequest.PageSize
             });
 
-            string totalResultsSql = $"SELECT COUNT(*) FROM Answers";
+            string totalResultsSql = @$"SELECT COUNT(*) FROM ""Answers""";
             int totalResults = await connection.ExecuteScalarAsync<int>(totalResultsSql);
 
             return new PaginatedResult<Answer>

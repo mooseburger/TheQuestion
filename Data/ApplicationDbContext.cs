@@ -40,8 +40,8 @@ namespace TheQuestion.Data
                 PhoneNumber = "1234567890"
             };
 
-            user.NormalizedUserName = "admin";
-            user.NormalizedEmail = "admin@example.com";
+            user.NormalizedUserName = "ADMIN";
+            user.NormalizedEmail = "ADMIN@EXAMPLE.COM";
             user.PasswordHash = "AQAAAAEAACcQAAAAEMuTng1EgJaSNjVSRClL6Rqpo9wOnkSmFtCHQitPIEgHcKKkqA6zxLuS1p3C1529dg=="; // admin123
             user.ConcurrencyStamp = "8cf618d1-9ae6-475e-8791-8badf12f99d4";
             user.SecurityStamp = "6d5e79c5-0bcd-4711-ad9b-91bc19ca4cf4";
@@ -53,8 +53,8 @@ namespace TheQuestion.Data
         private void SeedRoles(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Id = "fab4fac1-c546-41de-aebc-a14da6895711", Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
-                new IdentityRole() { Id = "c7b013f0-5201-4317-abd8-c211f91b7330", Name = "Reviewer", ConcurrencyStamp = "2", NormalizedName = "Reviewer" }
+                new IdentityRole() { Id = "fab4fac1-c546-41de-aebc-a14da6895711", Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "ADMIN" },
+                new IdentityRole() { Id = "c7b013f0-5201-4317-abd8-c211f91b7330", Name = "Reviewer", ConcurrencyStamp = "2", NormalizedName = "REVIEWER" }
                 );
         }
 
