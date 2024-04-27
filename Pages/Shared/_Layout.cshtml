@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 </head>
-<body class="@(Context.Request.Cookies["TheQuestionStyle"] ?? "boring fade-in")">
-    <img id="cloud-1" class="gnosis-cloud" src="~/images/cloud.png" />
-    <img id="cloud-2" class="gnosis-cloud" src="~/images/cloud-2.png" />
-    <img id="cloud-4_1" class="gnosis-cloud" src="~/images/cloud-4.png" />
-    <img id="cloud-4_2" class="gnosis-cloud" src="~/images/cloud-4.png" />
-    <img id="cloud-5" class="gnosis-cloud" src="~/images/cloud-5.png" />
+<body>
+    <div id="page-container" class="@(Context.Request.Cookies["TheQuestionStyle"] ?? "boring fade-in")">
+        <img id="cloud-1" class="gnosis-cloud" src="~/images/cloud.png" />
+        <img id="cloud-2" class="gnosis-cloud" src="~/images/cloud-2.png" />
+        <img id="cloud-4_1" class="gnosis-cloud" src="~/images/cloud-4.png" />
+        <img id="cloud-4_2" class="gnosis-cloud" src="~/images/cloud-4.png" />
+        <img id="cloud-5" class="gnosis-cloud" src="~/images/cloud-5.png" />
 
-    <div class="page-container">
         <header class="mb-5">
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3">
                 <div class="container">

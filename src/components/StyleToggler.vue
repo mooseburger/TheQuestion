@@ -9,6 +9,8 @@
         gnosis: { id: 'gnosis', name: 'Gnosis' }
     };
 
+    const pageContainer = document.getElementById('page-container');
+
     export default {
         data() {
             return {
@@ -28,21 +30,21 @@
 
                 if (zoomLevel > this.maxZoom) zoomLevel = this.maxZoom;
 
-                document.body.style.backgroundSize = `${zoomLevel}%, 100%`;
+                pageContainer.style.backgroundSize = `${zoomLevel}%, 100%`;
             },
             setStyle(newStyle, storeStyle = true) {
-                document.body.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
-                document.body.dataset.bsTheme = "";
+                pageContainer.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
+                pageContainer.dataset.bsTheme = "";
                 document.removeEventListener('scroll', this.vajraZoom);
-                document.body.style.backgroundSize = '';
-                document.body.classList.add(newStyle);
+                pageContainer.style.backgroundSize = '';
+                pageContainer.classList.add(newStyle);
 
                 if (newStyle === 'vajra') {
-                    document.body.dataset.bsTheme = "dark";
-                    const initialBackgroundSize = window.getComputedStyle(document.body).backgroundSize;
+                    pageContainer.dataset.bsTheme = "dark";
+                    const initialBackgroundSize = window.getComputedStyle(pageContainer).backgroundSize;
                     this.initialPatternSize = parseFloat(initialBackgroundSize.split(',')[0].split('%')[0]);
 
-                    const currentBreakpoint = window.getComputedStyle(document.body).getPropertyValue('--current-breakpoint');
+                    const currentBreakpoint = window.getComputedStyle(pageContainer).getPropertyValue('--current-breakpoint');
                     switch (currentBreakpoint) {
                         case 'xs':
                         case 'md':
@@ -63,7 +65,7 @@
                 // Trigger a reflow (thanks ChatGPT!)
                 void document.body.offsetWidth;
 
-                document.body.classList.add('fade-in');
+                pageContainer.classList.add('fade-in');
 
                 this.style = {
                     id: newStyle,
