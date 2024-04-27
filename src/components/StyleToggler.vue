@@ -9,34 +9,55 @@
         gnosis: { id: 'gnosis', name: 'Gnosis' }
     };
 
-    function vajraZoom() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        let zoomLevel = 100 + (scrollTop / 80); // Adjust the denominator to control the speed of zoom
-
-        if (zoomLevel > 205) zoomLevel = 205;
-
-        document.body.style.backgroundSize = `${zoomLevel}%, 100%`;
-    }
-
     export default {
         data() {
             return {
                 styles,
-                style: styles.boring
+                style: styles.boring,
+                initialPatternSize: null,
+                zoomRate: 0,
+                maxZoom: 0
             }
         },
         methods: {
+            vajraZoom() {
+                if (!this.initialPatternSize) return;
+
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                let zoomLevel = this.initialPatternSize + (scrollTop / this.zoomRate); // Adjust the denominator to control the speed of zoom
+
+                if (zoomLevel > this.maxZoom) zoomLevel = this.maxZoom;
+
+                document.body.style.backgroundSize = `${zoomLevel}%, 100%`;
+            },
             setStyle(newStyle, storeStyle = true) {
                 document.body.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
                 document.body.dataset.bsTheme = "";
-                document.removeEventListener('scroll', vajraZoom);
+                document.removeEventListener('scroll', this.vajraZoom);
                 document.body.style.backgroundSize = '';
                 document.body.classList.add(newStyle);
 
                 if (newStyle === 'vajra') {
                     document.body.dataset.bsTheme = "dark";
+                    const initialBackgroundSize = window.getComputedStyle(document.body).backgroundSize;
+                    this.initialPatternSize = parseFloat(initialBackgroundSize.split(',')[0].split('%')[0]);
 
-                    document.addEventListener('scroll', vajraZoom);
+                    const currentBreakpoint = window.getComputedStyle(document.body).getPropertyValue('--current-breakpoint');
+                    switch (currentBreakpoint) {
+                        case 'xs':
+                        case 'md':
+                        case 'lg':
+                            this.zoomRate = 500;
+                            this.maxZoom = this.initialPatternSize * 1.25;
+                            break;
+                        case 'xl':
+                        case 'xxl':
+                            this.zoomRate = 300;
+                            this.maxZoom = this.initialPatternSize * 2;
+                            break;
+                    }
+
+                    document.addEventListener('scroll', this.vajraZoom);
                 }
 
                 // Trigger a reflow (thanks ChatGPT!)
