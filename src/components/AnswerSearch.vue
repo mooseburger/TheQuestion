@@ -41,10 +41,10 @@
                         :search-client="searchClient">
         <div class="row mb-5 answer-search-controls">
             <div class="col-md-9 col-lg-10">
-                <ais-search-box :class-names="{ 'ais-SearchBox-input': 'form-control search-control py-2', 'ais-SearchBox-submit': 'search-glass', 'ais-SearchBox-reset': 'search-reset' }" />
+                <ais-search-box :class-names="{ 'ais-SearchBox-input': 'form-control search-control', 'ais-SearchBox-submit': 'search-glass', 'ais-SearchBox-reset': 'search-reset' }" />
             </div>
             <div class="col-md-3 col-lg-2 mt-3 mt-md-0">
-                <ais-sort-by :items="sort" :class-names="{ 'ais-SortBy-select': 'form-select search-control px-3 py-2' }"></ais-sort-by>
+                <ais-sort-by :items="sort" :class-names="{ 'ais-SortBy-select': 'form-select search-control px-3' }"></ais-sort-by>
             </div>
         </div>
         

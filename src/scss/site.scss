@@ -139,6 +139,10 @@ body {
     font-weight: bold;
     padding: 22px 40px;
 
+    @media only screen and (min-resolution: 192dpi) {
+        padding-bottom: 18px; // On high resolution displays it was rendering with increased padding bottom for some reason
+    }
+
     &:hover {
         color: $white;
     }
@@ -158,6 +162,10 @@ body {
         font-size: 20px;
         padding: 11px 40px;
     }
+
+    @media only screen and (min-resolution: 192dpi) {
+        padding-bottom: 7px; // On high resolution displays it was rendering with increased padding bottom for some reason
+    }
 }
 
 .answer-search-controls {
@@ -168,8 +176,14 @@ body {
         right: 0.8rem;
     }
     .search-control {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
         padding-left: 2.2rem;
         border-radius: 18px;
+
+        @media only screen and (min-resolution: 192dpi) {
+            padding-bottom: 0.2rem; // On high resolution displays it was rendering with increased padding bottom for some reason
+        }
     }
 }
 
