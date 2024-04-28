@@ -2,8 +2,8 @@
     background-image: url(../assets/vajra-pattern.png), linear-gradient(159deg, #071d67 9%, #07112e 90%);
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: 50% -25%, top;
-    background-size: 240%, 100%;
+    background-position: 50% 25%, top;
+    background-size: 140%, 100%;
     transition: background-size 0.2s ease-out;
     position: relative;
     --current-breakpoint: xs; 
