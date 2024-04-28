@@ -90,11 +90,23 @@
 
     .btn-question-primary {
         background-color: $vajraAccent;
+
+        &:active {
+            background-color: $vajraAccent;
+            color: white;
+            border-color: $vajraAccent;
+        }
     }
 
     .btn-question {
         background-color: $vajraAccent;
         color: white;
+
+        &:active {
+            background-color: $vajraAccent;
+            color: white;
+            border-color: $vajraAccent;
+        }
 
         &.outline {
             background-color: transparent;

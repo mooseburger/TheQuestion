@@ -32,11 +32,23 @@
 
     .btn-question-primary {
         background-color: $boringAccent;
+
+        &:active {
+            background-color: $boringAccent;
+            color: white;
+            border-color: $boringAccent;
+        }
     }
 
     .btn-question {
         background-color: $boringAccent;
         color: white;
+
+        &:active {
+            background-color: $boringAccent;
+            color: white;
+            border-color: $boringAccent;
+        }
 
         &.outline {
             background-color: white;

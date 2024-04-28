@@ -113,6 +113,12 @@
         border-color: $gnosisAccent;
         border-width: 3px;
 
+        &:active {
+            background-color: $gnosisPrimaryBtnBg;
+            color: white;
+            border-color: $gnosisAccent;
+        }
+
         &.outline {
             background-color: transparent;
             color: $gnosisAnswerText;
@@ -123,6 +129,12 @@
         background-color: $gnosisPrimaryBtnBg;
         border-color: $gnosisAccent;
         border-width: 3px;
+
+        &:active {
+            background-color: $gnosisPrimaryBtnBg;
+            color: white;
+            border-color: $gnosisAccent;
+        }
     }
 
     .answer-search-controls {
