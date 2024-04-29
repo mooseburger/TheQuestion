@@ -201,10 +201,11 @@ namespace TheQuestion.Repositories
             using var connection = GetConnection();
 
             int nextId = await connection.ExecuteScalarAsync<int>(@"
-                SELECT TOP 1 ""Id""
+                SELECT ""Id""
                 FROM ""AnswerQueue""
                 WHERE ""Id"" > @sourceId AND ""AnswerStatusId"" = @inReviewId
                 ORDER BY ""Id"" ASC
+                LIMIT 1
             ", new { sourceId = id, inReviewId = AnswerStatusEnum.InReview });
 
             return nextId;
