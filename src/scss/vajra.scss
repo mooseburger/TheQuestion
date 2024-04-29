@@ -6,6 +6,7 @@
     background-size: 140%, 100%;
     transition: background-size 0.2s ease-out;
     position: relative;
+    color: var(--bs-body-color);
     --current-breakpoint: xs; 
 
     @media (min-width: $md-breakpoint) {
