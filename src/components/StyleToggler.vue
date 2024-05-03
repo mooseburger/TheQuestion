@@ -18,7 +18,8 @@
                 style: styles.boring,
                 initialPatternSize: null,
                 zoomRate: 0,
-                maxZoom: 0
+                maxZoom: 0,
+                popover: null
             }
         },
         methods: {
@@ -33,6 +34,11 @@
                 pageContainer.style.backgroundSize = `${zoomLevel}%, 100%`;
             },
             setStyle(newStyle, storeStyle = true, withAnimation = true) {
+                if (this.popover) {
+                    this.popover.dispose();
+                    this.popover = null;
+                }
+
                 pageContainer.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
                 pageContainer.dataset.bsTheme = "";
                 document.removeEventListener('scroll', this.vajraZoom);
@@ -77,28 +83,41 @@
                     cookieService.setCookie(styleStorageName, newStyle, 365);
                 }
             },
-            async initializationCycle() {
-                const cycleWaitMillis = 2000;
+            async showPopovers() {
+                await new Promise(r => setTimeout(r, 500)); // Wait for the component to have truly rendered. Hacky, but gets the job done...
+                const config = {
+                    content: 'Try a different look!',
+                    trigger: 'manual',
+                    container: 'body'
+                }
 
-                await new Promise(r => setTimeout(r, cycleWaitMillis));
-
-                this.setStyle(styles.vajra.id, false);
-
-                await new Promise(r => setTimeout(r, cycleWaitMillis));
-
-                this.setStyle(styles.gnosis.id, false);
-
-                await new Promise(r => setTimeout(r, cycleWaitMillis));
-
-                this.setStyle(styles.boring.id, true);
+                const currentBreakpoint = window.getComputedStyle(pageContainer).getPropertyValue('--current-breakpoint');
+                if (currentBreakpoint !== 'xs') {
+                    new bootstrap.Popover(document.getElementById('style-toggler'), {
+                        ...config,
+                        placement: 'bottom'
+                    })
+                    this.popover = bootstrap.Popover.getOrCreateInstance('#style-toggler');
+                    this.popover.show();
+                } else {
+                    new bootstrap.Popover(document.querySelectorAll('.navbar-toggler')[0], {
+                        ...config,
+                        placement: 'left'
+                    })
+                    this.popover = bootstrap.Popover.getOrCreateInstance('.navbar-toggler');
+                    this.popover.show();
+                }
             }
         },
         created() {
-            if (!localStorage.getItem(styleStorageName)) {
-                //this.initializationCycle();
-            } else {
+            if (localStorage.getItem(styleStorageName)) {
                 const style = localStorage.getItem(styleStorageName);
                 this.setStyle(style, true, false);
+            }
+        },
+        mounted() {
+            if (!localStorage.getItem(styleStorageName)) {
+                this.showPopovers();
             }
         }
     }

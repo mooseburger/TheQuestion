@@ -4,6 +4,23 @@
 
 :root {
     --star-image: url(../assets/star.png);
+    --current-breakpoint: xs;
+
+    @media (min-width: $md-breakpoint) {
+        --current-breakpoint: md;
+    }
+
+    @media (min-width: $lg-breakpoint) {
+        --current-breakpoint: lg;
+    }
+
+    @media (min-width: $xl-breakpoint) {
+        --current-breakpoint: xl;
+    }
+
+    @media (min-width: $xxl-breakpoint) {
+        --current-breakpoint: xxl;
+    }
 }
 
 @keyframes fadeIn {
