@@ -32,7 +32,7 @@
 
                 pageContainer.style.backgroundSize = `${zoomLevel}%, 100%`;
             },
-            setStyle(newStyle, storeStyle = true) {
+            setStyle(newStyle, storeStyle = true, withAnimation = true) {
                 pageContainer.classList.remove(styles.boring.id, styles.vajra.id, styles.gnosis.id, 'fade-in');
                 pageContainer.dataset.bsTheme = "";
                 document.removeEventListener('scroll', this.vajraZoom);
@@ -65,7 +65,7 @@
                 // Trigger a reflow (thanks ChatGPT!)
                 void document.body.offsetWidth;
 
-                pageContainer.classList.add('fade-in');
+                if (withAnimation) pageContainer.classList.add('fade-in');
 
                 this.style = {
                     id: newStyle,
@@ -95,10 +95,10 @@
         },
         created() {
             if (!localStorage.getItem(styleStorageName)) {
-                this.initializationCycle();
+                //this.initializationCycle();
             } else {
                 const style = localStorage.getItem(styleStorageName);
-                this.setStyle(style);
+                this.setStyle(style, true, false);
             }
         }
     }
