@@ -26,7 +26,7 @@
                 }
 
                 if (this.totalPages < this.currentPage) {
-                    this.setPage(this.totalPages);
+                    this.setPage(this.totalPages ? this.totalPages : 1);
                 }
             }
         },
