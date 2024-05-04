@@ -11,6 +11,7 @@
         0%;
     position: relative;
     overflow: hidden;
+    z-index: -2;
 
     .gnosis-cloud {
         display: block;
