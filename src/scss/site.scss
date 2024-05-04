@@ -230,6 +230,7 @@ body {
     .answer-text {
         font-size: 20px;
         line-height: 1.45;
+        white-space: pre-line;
 
         @media (min-width: $md-breakpoint) {
             font-size: 22px;
