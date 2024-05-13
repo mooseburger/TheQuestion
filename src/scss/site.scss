@@ -44,6 +44,10 @@ body {
     position: relative;
 }
 
+blockquote {
+    white-space: pre-line;
+}
+
 .vajra-pattern {
     display: none;
 }
@@ -221,8 +225,12 @@ body {
     }
 
     .answer-title {
-        font-size: 38px;
+        font-size: 30px;
         font-weight: bold;
+
+        @media (min-width: $md-breakpoint) {
+            font-size: 38px;
+        }
 
         a {
             color: inherit;
