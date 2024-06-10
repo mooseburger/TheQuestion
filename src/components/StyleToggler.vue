@@ -4,7 +4,7 @@
     const styleStorageName = 'TheQuestionStyle';
 
     const styles = {
-        boring: { id: 'boring', name: 'Boring' },
+        boring: { id: 'boring', name: 'Simple' },
         vajra: { id: 'vajra', name: 'Vajra' },
         gnosis: { id: 'gnosis', name: 'Gnosis' }
     };
