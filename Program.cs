@@ -76,8 +76,18 @@ else
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+var cacheMaxAgeSixMonths = (60 * 60 * 24 * 31 * 6).ToString();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append(
+             "Cache-Control", $"public, max-age={cacheMaxAgeSixMonths}");
+    }
+});
 
 app.UseRouting();
 
