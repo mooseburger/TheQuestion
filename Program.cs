@@ -24,6 +24,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+builder.Services.AddScoped<IAnswerVoteRepository, AnswerVoteRepository>();
 
 // CAPTCHA
 builder.Services.Configure<CaptchaConfiguration>(builder.Configuration.GetSection("CAPTCHA"));

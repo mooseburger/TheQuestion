@@ -10,5 +10,11 @@ namespace TheQuestion.Data.Models
         [Required]
         [Column(Order = 4)]
         public DateTimeOffset PublishedDate { get; set; }
+
+        [Required]
+        public double Rank { get; set; }
+
+        [Required]
+        public int TotalVotes { get; set; }
     }
 }

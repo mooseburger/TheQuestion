@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheQuestion.Data;
@@ -11,9 +12,11 @@ using TheQuestion.Data;
 namespace TheQuestion.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240622210628_AnswerVotes")]
+    partial class AnswerVotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,21 +280,11 @@ namespace TheQuestion.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(4);
 
-                    b.Property<double>("Rank")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("double precision")
-                        .HasDefaultValue(0.0);
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnOrder(2);
-
-                    b.Property<int>("TotalVotes")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
@@ -379,7 +372,7 @@ namespace TheQuestion.Migrations
 
                     b.HasKey("AnswerId", "IpAddress");
 
-                    b.ToTable("AnswerVotes");
+                    b.ToTable("AnswerVote");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

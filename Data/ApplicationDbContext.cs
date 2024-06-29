@@ -26,7 +26,21 @@ namespace TheQuestion.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Answer>();
+            builder.Entity<Answer>()
+                .Property(a => a.Rank)
+                .HasDefaultValue(0);
+
+            builder.Entity<Answer>()
+                .Property(a => a.TotalVotes)
+                .HasDefaultValue(0);
+
+            builder.Entity<AnswerVote>()
+                .HasKey(av => new { av.AnswerId, av.IpAddress });
+
+            builder.Entity<AnswerVote>()
+                .HasOne<Answer>()
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         private void SeedUsers(ModelBuilder builder)
