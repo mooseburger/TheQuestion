@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TheQuestion.Repositories
 {
