@@ -3,7 +3,7 @@
     import algoliasearch from 'algoliasearch/lite';
     import 'instantsearch.css/themes/algolia-min.css';
     import { AisInstantSearch, AisInfiniteHits, AisSearchBox, AisSortBy } from 'vue-instantsearch/vue3/es';
-    import AnswerShare from './AnswerShare.vue';
+    import AnswerUtility from './AnswerUtility.vue';
 
     export default {
         components: {
@@ -11,7 +11,7 @@
             AisInfiniteHits,
             AisSearchBox,
             AisSortBy,
-            AnswerShare
+            AnswerUtility
         },
         data() {
             return {
@@ -61,7 +61,7 @@
                             <div class="card-body">
                                 <h1 class="answer-title mb-4"><a :href="`/answer/${a.id}`">#{{ a.id }}</a></h1>
                                 <p class="answer-text">{{a.text}}</p>
-                                <answer-share :id="a.id" :text="a.text" />
+                                <answer-utility :id="a.id" :text="a.text" />
                             </div>
                         </div>
                     </div>

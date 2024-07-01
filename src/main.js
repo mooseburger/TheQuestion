@@ -9,7 +9,7 @@ import AnswerDashboard from './components/AnswerDashboard.vue';
 import AnswerTable from './components/AnswerTable.vue';
 import AnswerSearch from './components/AnswerSearch.vue';
 import StyleToggler from './components/StyleToggler.vue';
-import AnswerShare from './components/AnswerShare.vue';
+import AnswerUtility from './components/AnswerUtility.vue';
 
 import { createApp, defineComponent, h } from 'vue';
 
@@ -51,19 +51,19 @@ if (styleTogglerContainer) {
     app.mount(styleTogglerContainer);
 }
 
-const answerShareContainer = document.getElementById("answer-share");
-if (answerShareContainer) {
+const answerUtilityContainer = document.getElementById("answer-utility");
+if (answerUtilityContainer) {
     const props = {
-        id: answerShareContainer.dataset.id,
-        text: answerShareContainer.dataset.text
+        id: answerUtilityContainer.dataset.id,
+        text: answerUtilityContainer.dataset.text
     };
 
-    const AnswerShareApp = defineComponent({
+    const AnswerUtilityApp = defineComponent({
         render() {
-            return h(AnswerShare, { ...props });
+            return h(AnswerUtility, { ...props });
         }
     });
 
-    const app = createApp(AnswerShareApp);
-    app.mount(answerShareContainer);
+    const app = createApp(AnswerUtilityApp);
+    app.mount(answerUtilityContainer);
 }
