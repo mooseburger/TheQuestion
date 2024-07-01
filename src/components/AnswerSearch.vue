@@ -22,7 +22,8 @@
                 sort: [
                     { value: this.algolia.index, label: 'Chronological' },
                     { value: `${this.algolia.index}_id_desc`, label: 'New first' }
-                ]
+                ],
+                upvotedAnswerIds: null
             };
         },
         methods: {
@@ -31,7 +32,26 @@
                     top: 0,
                     behavior: "smooth"
                 });
+            },
+            fetchUserUpvotes: async function () {
+                const response = await fetch(`/answer/vote`);
+                const upvotedAnswerIds = await response.json();
+
+                this.upvotedAnswerIds = new Set(upvotedAnswerIds);
+            },
+            getUserUpvote: function (answerId) {
+                return this.upvotedAnswerIds.has(answerId);
+            },
+            voteToggle: function (answerId) {
+                if (this.getUserUpvote(answerId)) {
+                    this.upvotedAnswerIds.delete(answerId);
+                } else {
+                    this.upvotedAnswerIds.add(answerId);
+                }
             }
+        },
+        created() {
+            this.fetchUserUpvotes();
         }
     };
 </script>
@@ -61,7 +81,7 @@
                             <div class="card-body">
                                 <h1 class="answer-title mb-4"><a :href="`/answer/${a.id}`">#{{ a.id }}</a></h1>
                                 <p class="answer-text">{{a.text}}</p>
-                                <answer-utility :id="a.id" :text="a.text" />
+                                <answer-utility v-if="upvotedAnswerIds" :id="a.id" :text="a.text" :initial-upvoted="getUserUpvote(a.id)" @vote-toggle="voteToggle" />
                             </div>
                         </div>
                     </div>

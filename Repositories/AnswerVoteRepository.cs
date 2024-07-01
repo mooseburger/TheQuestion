@@ -24,7 +24,7 @@ namespace TheQuestion.Repositories
             (""AnswerId"", ""IpAddress"", ""VoteDate"")
             VALUES
             (@answerId, @ipAddress, @voteDate)
-            ON CONFLICT DO UPDATE
+            ON CONFLICT ON CONSTRAINT ""PK_AnswerVotes"" DO UPDATE
             SET ""VoteDate"" = @voteDate";
 
             await connection.ExecuteAsync(sql, new { answerId, ipAddress, voteDate = DateTimeOffset.UtcNow });
@@ -53,7 +53,7 @@ namespace TheQuestion.Repositories
 
             sql = @"UPDATE ""Answers"" 
                 SET ""Rank"" = @rank, ""TotalVotes"" = @totalVotes
-                WHERE ""AnswerId"" = @answerId 
+                WHERE ""Id"" = @answerId 
             ";
 
             await connection.ExecuteAsync(sql, new { answerId, rank, totalVotes });
@@ -61,13 +61,13 @@ namespace TheQuestion.Repositories
             return Tuple.Create(rank, totalVotes);
         }
 
-        public Task<IEnumerable<int>> GetVotesByIpAddress(string ipAddress)
+        public async Task<IEnumerable<int>> GetVotesByIpAddress(string ipAddress)
         {
             using var connection = GetConnection();
 
             string sql = @"SELECT ""AnswerId"" FROM ""AnswerVotes"" WHERE ""IpAddress"" = @ipAddress";
 
-            return connection.QueryAsync<int>(sql, new { ipAddress });
+            return await connection.QueryAsync<int>(sql, new { ipAddress });
         }
     }
 }

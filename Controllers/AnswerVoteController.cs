@@ -34,5 +34,13 @@ namespace TheQuestion.Controllers
 
             return Ok();
         }
+
+        [HttpGet("/answer/vote")]
+        public async Task<IActionResult> GetVotes() 
+        {
+            var upvotedAnswers = await _answerVoteRepository.GetVotesByIpAddress(Request.HttpContext.Connection.RemoteIpAddress!.ToString());
+
+            return Ok(upvotedAnswers);
+        }
     }
 }
