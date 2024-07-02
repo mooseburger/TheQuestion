@@ -20,8 +20,10 @@
                     this.algolia.apiKey
                 ),
                 sort: [
-                    { value: this.algolia.index, label: 'Chronological' },
-                    { value: `${this.algolia.index}_id_desc`, label: 'New first' }
+                    { value: this.algolia.index, label: 'Popularity wave' },
+                    { value: `${this.algolia.index}_popularity_desc`, label: 'Most popular' },
+                    { value: `${this.algolia.index}_id_asc`, label: 'Chronological' },
+                    { value: `${this.algolia.index}_id_desc`, label: 'Newer' }
                 ],
                 upvotedAnswerIds: null
             };
