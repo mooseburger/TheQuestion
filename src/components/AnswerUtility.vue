@@ -3,13 +3,12 @@
         props: {
             id: Number,
             text: String,
-            initialUpvoted: Boolean
+            upvoted: Boolean
         },
         emits: ['voteToggle'],
         data() {
             return {
-                showShareOptions: false,
-                upvoted: this.initialUpvoted
+                showShareOptions: false
             }
         },
         methods: {
@@ -44,7 +43,6 @@
                     await fetch(`/answer/vote/${this.id}/undo`, { method: 'POST' });
                 }
 
-                this.upvoted = !this.upvoted;
                 this.$emit('voteToggle', this.id);
             }
         }

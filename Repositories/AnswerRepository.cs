@@ -7,7 +7,7 @@ namespace TheQuestion.Repositories
 {
     public interface IAnswerRepository
     {
-        Task<PublicAnswer> GetPublicAnswer(int id);
+        Task<PublicAnswer> GetPublicAnswer(int id, string ipAddress);
 
         Task<PaginatedResult<AnswerQueueTable>> GetAnswerQueuePage(AnswerStatusEnum? status, SortDirection sortDirection, PaginatedRequest paginatedRequest);
 
@@ -36,13 +36,16 @@ namespace TheQuestion.Repositories
     {
         public AnswerRepository(IConfiguration configuration) : base(configuration) { }
 
-        public async Task<PublicAnswer> GetPublicAnswer(int id)
+        public async Task<PublicAnswer> GetPublicAnswer(int id, string ipAddress)
         {
-            string sql = @"SELECT *, (SELECT MAX(""Id"") FROM ""Answers"") AS LastId FROM ""Answers"" WHERE ""Id"" = @id";
+            string sql = @"SELECT *, 
+                (SELECT MAX(""Id"") FROM ""Answers"") AS LastId, 
+                (SELECT COUNT(*) FROM ""AnswerVotes"" WHERE ""AnswerId"" = @id AND ""IpAddress"" = @ipAddress) AS Upvoted 
+                FROM ""Answers"" WHERE ""Id"" = @id";
 
             using var connection = GetConnection();
 
-            var answer = await connection.QueryFirstOrDefaultAsync<PublicAnswer>(sql, new { id });
+            var answer = await connection.QueryFirstOrDefaultAsync<PublicAnswer>(sql, new { id, ipAddress });
 
             return answer;
         }

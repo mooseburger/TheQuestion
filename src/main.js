@@ -9,9 +9,9 @@ import AnswerDashboard from './components/AnswerDashboard.vue';
 import AnswerTable from './components/AnswerTable.vue';
 import AnswerSearch from './components/AnswerSearch.vue';
 import StyleToggler from './components/StyleToggler.vue';
-import AnswerUtility from './components/AnswerUtility.vue';
+import AnswerUtilityApp from './components/AnswerUtilityApp.vue';
 
-import { createApp, defineComponent, h } from 'vue';
+import { createApp } from 'vue';
 
 const userListContainer = document.getElementById("user-list");
 if (userListContainer) {
@@ -53,17 +53,6 @@ if (styleTogglerContainer) {
 
 const answerUtilityContainer = document.getElementById("answer-utility");
 if (answerUtilityContainer) {
-    const props = {
-        id: answerUtilityContainer.dataset.id,
-        text: answerUtilityContainer.dataset.text
-    };
-
-    const AnswerUtilityApp = defineComponent({
-        render() {
-            return h(AnswerUtility, { ...props });
-        }
-    });
-
     const app = createApp(AnswerUtilityApp);
     app.mount(answerUtilityContainer);
 }

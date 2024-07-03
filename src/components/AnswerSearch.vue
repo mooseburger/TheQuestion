@@ -83,7 +83,7 @@
                             <div class="card-body">
                                 <h1 class="answer-title mb-4"><a :href="`/answer/${a.id}`">#{{ a.id }}</a></h1>
                                 <p class="answer-text">{{a.text}}</p>
-                                <answer-utility v-if="upvotedAnswerIds" :id="a.id" :text="a.text" :initial-upvoted="getUserUpvote(a.id)" @vote-toggle="voteToggle" />
+                                <answer-utility v-if="upvotedAnswerIds" :id="a.id" :text="a.text" :upvoted="getUserUpvote(a.id)" @vote-toggle="voteToggle" />
                             </div>
                         </div>
                     </div>

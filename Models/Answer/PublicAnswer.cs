@@ -2,6 +2,7 @@
 {
     public class PublicAnswer : Data.Models.Answer
     {
+        public bool Upvoted { get; set; }
         public int LastId { get; set; }
         public bool IsFirst => Id == 1;
         public bool IsLast => Id == LastId;

@@ -274,6 +274,10 @@ blockquote {
 
     .carousel-control-prev, .carousel-control-next {
         width: 8%;
+
+        @media (min-width: $xl-breakpoint) {
+            width: 6%;
+        }
     }
 }
 

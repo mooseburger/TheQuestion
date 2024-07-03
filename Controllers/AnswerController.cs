@@ -25,7 +25,7 @@ namespace TheQuestion.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            var answer = await _answerRepository.GetPublicAnswer(id);
+            var answer = await _answerRepository.GetPublicAnswer(id, Request.HttpContext.Connection.RemoteIpAddress!.ToString());
 
             return View(answer);
         }
