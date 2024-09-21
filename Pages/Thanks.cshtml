@@ -2,15 +2,28 @@
 @using TheQuestion.Models.Pages
 @model TheQuestion.Pages.ThanksModel
 @{
+    string message = Uri.EscapeDataString("What do you wish that everybody knew?\n\nhttps://thequestion.diy");
 }
 
-<div class="container main py-3">
+<div class="container main py-3 thanks">
     @await Html.PartialAsync("_PageHeading", new PageHeading() { Title = "Thank You!" })
     <div class="row justify-content-center my-4">
         <div class="col-md-10">
             <p class="blurb">
-                Answers are published on an ongoing basis, but you can count on all of the answers for a given week to be processed by Sunday EOD at the latest.
+                Answers are published on an ongoing basis, but you can count on all of the answers for a given week to be processed by Sunday EOD at the latest. In the meantime, please share The Question!
             </p>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-4 d-flex justify-content-evenly">
+            <a class="share-option twitter-share-button"
+               target="_blank"
+               href="https://twitter.com/intent/tweet?text=@message">
+                <i class="bi bi-twitter-x"></i>
+            </a>
+            <a class="share-option whatsapp-share-button" target="_blank" href="whatsapp://send?text=@message">
+                <i class="bi bi-whatsapp"></i>
+            </a>
         </div>
     </div>
 </div>

@@ -154,14 +154,10 @@
         .answer-text {
             color: $gnosisAnswerText;
         }
+    }
 
-        .share {
-            color: $gnosisAnswerTitle;
-        }
-
-        .share-option, .answer-utility-option {
-            color: $gnosisAnswerUtility;
-        }
+    .share-option, .answer-utility-option {
+        color: $gnosisAnswerUtility;
     }
 
     footer {

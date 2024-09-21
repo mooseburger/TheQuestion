@@ -264,10 +264,6 @@ blockquote {
         cursor: pointer;
     }
 
-    .share-option {
-        font-size: 1.75rem;
-    }
-
     .copy-button {
         cursor: pointer;
     }
@@ -279,6 +275,10 @@ blockquote {
             width: 6%;
         }
     }
+}
+
+.share-option {
+    font-size: 1.75rem;
 }
 
 .answer-submit {

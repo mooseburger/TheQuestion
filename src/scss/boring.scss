@@ -68,14 +68,10 @@
         .answer-text {
             color: $boringAnswerText;
         }
+    }
 
-        .share {
-            color: $boringAnswerTitle;
-        }
-
-        .share-option {
-            color: $boringAnswerTitle;
-        }
+    .share-option, .answer-utility-option {
+        color: $boringAnswerTitle;
     }
 
     .answer-submit {
