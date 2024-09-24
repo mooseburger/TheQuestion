@@ -15,7 +15,7 @@
         data() {
             return {
                 styles,
-                style: styles.boring,
+                style: styles.vajra,
                 initialPatternSize: null,
                 zoomRate: 0,
                 maxZoom: 0,
